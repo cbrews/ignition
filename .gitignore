@@ -1,0 +1,13 @@
+*.swp
+*.o
+*.a
+*.exe
+
+.DS_Store
+
+.venv
+*.pyc
+*.pyo
+__pycache__/
+
+.vscode/
