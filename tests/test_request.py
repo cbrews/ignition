@@ -16,16 +16,27 @@ You should have received a copy of the GNU General Public License
 along with titan2.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import sys
+import unittest
 
-# Polyfill to include gemini in urllib parsing
-if sys.version_info > (3, 10):
-  raise Exception("Python versions > 3.9.x are not supported at this time.")
-elif sys.version_info > (3, 9):
-  from .python3_9.Lib import urllib
-elif sys.version_info > (3, 8):
-  from .python3_8.Lib import urllib
-elif sys.version_info > (3, 7):
-  from .python3_7.Lib import urllib
-else:
-  raise Exception("Python versions < 3.7 are not supported at this time.")
+from titan2.request import Request
+
+class RequestTests(unittest.TestCase):
+  def setUp(self):
+    self.request = Request(
+      'software/',
+      referer='gemini://gemini.circumlunar.space/',
+      request_timeout=30
+    )
+
+  def test_set_timeout(self):
+    self.request.set_timeout(10)
+    self.assertEqual(self.request.timeout, 10)
+
+  def test_get_url(self):
+    self.assertEqual(
+      self.request.get_url(),
+      'gemini://gemini.circumlunar.space/software/'
+    )
+
+  def test_send(self):
+    print("Requests.send() test skipped; it's currently too complex to test.")

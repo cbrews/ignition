@@ -1,8 +1,26 @@
+'''
+titan2 - Gemini Protocol Client Transport Library
+Copyright (C) 2020  Chris Brousseau
+
+titan2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+titan2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 import logging
 
+from .python import urllib
 from .globals import *
 from .util import normalize_path
-from .python.Lib.urllib.parse import urlsplit, urljoin # Polyfill to include gemini
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +58,9 @@ class URL:
 
     base_url = url
     if referer_url:
-      base_url = urljoin(referer_url, url, False)
+      base_url = urllib.parse.urljoin(referer_url, url, False)
 
-    return urlsplit(base_url, GEMINI_SCHEME, False)
+    return urllib.parse.urlsplit(base_url, GEMINI_SCHEME, False)
 
   def __str__(self):
     '''

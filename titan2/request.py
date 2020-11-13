@@ -1,10 +1,30 @@
+'''
+titan2 - Gemini Protocol Client Transport Library
+Copyright (C) 2020  Chris Brousseau
+
+titan2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+titan2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 import socket
+from socket import timeout
 import re
 import ssl
 import logging
 
 from .globals import *
 from .response import BaseResponse, ResponseFactory
+from .cert_store import CertStore, RemoteCertificateExpired, TofuCertificateRejection
 from .url import URL
 
 logger = logging.getLogger(__name__)
@@ -13,24 +33,41 @@ class Request:
   '''
   Handles a single request to a Gemini Server.
 
-  The request handler has three key responsibilities:
+  The request handler has four key responsibilities:
 
   1. It manages resolution of the requested URL for
      the remote server, by invoking underlying URL parse
      logic
   2. It manages transmission of the request via TLS over a
      socket connection to the remote server.
-  3. It manages raw response handling and designation to 
+  3. It validates SSL certificate response using a TOFU
+     (trust-on-first-use) validation paradigm
+  4. It manages raw response handling and designation to 
      the Response object
   '''
 
-  def __init__(self, url: str, referer=None, timeout=None):
+  def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None):
     '''
     Initializes Response with a url, referer, and timeout
     '''
 
     self.__url = URL(url, referer_url=referer)
-    self.timeout = timeout if timeout else REQUEST_DEFAULT_TIMEOUT
+    self.timeout = request_timeout
+    self.__cert_store = cert_store
+
+  def set_timeout(self, request_timeout: float):
+    '''
+    Update request timeout (in seconds)
+    '''
+
+    self.timeout = request_timeout
+
+  def get_url(self):
+    '''
+    Fetch the generated URL for the request (based on referer, if present)
+    '''
+    
+    return str(self.__url)
 
   def send(self):
     '''
@@ -44,17 +81,19 @@ class Request:
 
     logger.debug(f"Attempting to negotiate SSL handshake with {self.__url.netloc()}")
     secure_socket_result = self.__negotiate_ssl(socket_result)
-    if isinstance(socket_result, BaseResponse):
+    if isinstance(secure_socket_result, BaseResponse):
       return secure_socket_result
+
+    logger.debug(f"Validating server certificate to {self.__url.netloc()}")
+    validation_result = self.__validate_ssl_certificate(secure_socket_result)
+    if isinstance(validation_result, BaseResponse):
+      return validation_result
 
     logger.debug(f"Sending request header: {self.__url}")
     header, raw_body = self.__transport_payload(secure_socket_result, self.__url)
 
     logger.debug(f"Received response header: [{header}] and payload of length {len(raw_body)} bytes")
     return self.__handle_response(header, raw_body)
-  
-  def url(self):
-    return str(self.__url)
 
   def __get_socket(self):
     '''
@@ -78,7 +117,7 @@ class Request:
     except socket.gaierror as err:
       logger.debug(f"socket.gaierror: socket.getaddrinfo returned unknown host for {self.__url.host()}.  {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST, "Unknown host")
-    except socket.timeout as err:
+    except timeout as err:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TIMEOUT, "Socket timeout")
     except Exception as err:
@@ -94,33 +133,57 @@ class Request:
       context = ssl.create_default_context()
       context.check_hostname = False
       context.verify_mode = ssl.CERT_NONE
-      return context.wrap_socket(socket, server_hostname=self.__url.host())
+      secure_socket_result = context.wrap_socket(socket, server_hostname=self.__url.host())
+      return secure_socket_result
     except ssl.SSLError as err:
-      logger.error(f"ssl.SSLError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "Generic SSL Error")
     except ssl.SSLZeroReturnError as err:
-      logger.error(f"ssl.SSLZeroReturnError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLZeroReturnError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Zero Return Error")
     except ssl.SSLWantReadError as err:
-      logger.error(f"ssl.SSLWantReadError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLWantReadError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Read Error")
     except ssl.SSLWantWriteError as err:
-      logger.error(f"ssl.SSLWantWriteError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLWantWriteError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Write Error")
     except ssl.SSLSyscallError as err:
-      logger.error(f"ssl.SSLSyscallError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLSyscallError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Syscall Error")
     except ssl.SSLEOFError as err:
-      logger.error(f"ssl.SSLEOFError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLEOFError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL EOF Error")
     except ssl.SSLCertVerificationError as err:
-      logger.error(f"ssl.SSLCertVerificationError for {self.__url.host()} - {err}")
-      raise err
+      logger.debug(f"ssl.SSLCertVerificationError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Certificate Verification Error")
     except ssl.CertificateError as err:
-      logger.error(f"ssl.CertificateError for {self.__url.host()} - {err}")
-      raise err
+      logger.debut(f"ssl.CertificateError for {self.__url.host()} - {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Certificate Error")
+    except timeout:
+      logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {timeout}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TIMEOUT, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when completing SSL handshake for {self.__url.host()} - {err}")
+      raise err
+    else:
+      return None
+
+  def __validate_ssl_certificate(self, secure_socket):
+    '''
+    Trust-on-first-use (TOFU) validation on SSL certificate or throws exception
+    '''
+    
+    try:
+      self.__cert_store.validate_tofu_or_add(secure_socket.server_hostname, secure_socket.getpeercert(True))
+      return True
+    except RemoteCertificateExpired as err:
+      logger.debug(f"RemoteCertificateExpired: {self.__url.netloc()} has an expired certificate. {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_EXPIRED_CERT, "Certificate expired")
+    except TofuCertificateRejection as err:
+      logger.debug(f"TofuCertificateRejection: {self.__url.netloc()} has an untrusted, unknown certificate. {err}")
+      return ResponseFactory.create(self.__url, TofuCertificateRejection, "Untrusted certificate (TOFU rejection)")
+    except Exception as err:
+      logger.error(f"Unknown exception encountered when validating ssl certificate on {self.__url.netloc()} - {err}")
       raise err
     else:
       return None
@@ -137,6 +200,8 @@ class Request:
     except Exception as err:
       logger.error(f"Unknown exception encountered when transporting data to {self.__url.netloc()} - {err}")
       raise err
+    else:
+      return None
 
   def __handle_response(self, header, raw_body):
     '''

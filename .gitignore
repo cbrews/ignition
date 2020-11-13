@@ -9,5 +9,11 @@
 *.pyc
 *.pyo
 __pycache__/
+dist/
+build/
+*.egg-info/
 
 .vscode/
+venv/
+
+.known_hosts
