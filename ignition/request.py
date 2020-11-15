@@ -1,19 +1,8 @@
 '''
-titan2 - Gemini Protocol Client Transport Library
-Copyright (C) 2020  Chris Brousseau
-
-titan2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-titan2 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL
+was not distributed with this file, You can obtain one 
+at http://mozilla.org/MPL/2.0/.
 '''
 
 import socket
@@ -107,22 +96,22 @@ class Request:
       return sock
     except ConnectionRefusedError as err:
       logger.debug(f"ConnectionRefusedError: Connection to {self.__url.netloc()} was refused. {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_REFUSED, "Connection refused")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Connection refused")
     except ConnectionResetError as err:
       logger.debug(f"ConnectionResetError: Connection to {self.__url.netloc()} was reset. {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_RESET, "Connection reset")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Connection reset")
     except socket.herror as err:
       logger.debug(f"socket.herror: socket.gethostbyaddr returned for {self.__url.host()}. {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST_ERROR, "Host error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Host error")
     except socket.gaierror as err:
       logger.debug(f"socket.gaierror: socket.getaddrinfo returned unknown host for {self.__url.host()}.  {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST, "Unknown host")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_DNS, "Unknown host")
     except timeout as err:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TIMEOUT, "Socket timeout")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when connecting to {self.__url.netloc()} - {err}")
-      raise err
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_NETWORK, "Networking error")
 
   def __negotiate_ssl(self, socket, cafile=None):
     '''
@@ -137,31 +126,31 @@ class Request:
       return secure_socket_result
     except ssl.SSLError as err:
       logger.debug(f"ssl.SSLError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "Generic SSL Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "Generic SSL Error")
     except ssl.SSLZeroReturnError as err:
       logger.debug(f"ssl.SSLZeroReturnError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Zero Return Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Zero Return Error")
     except ssl.SSLWantReadError as err:
       logger.debug(f"ssl.SSLWantReadError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Read Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Read Error")
     except ssl.SSLWantWriteError as err:
       logger.debug(f"ssl.SSLWantWriteError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Write Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Write Error")
     except ssl.SSLSyscallError as err:
       logger.debug(f"ssl.SSLSyscallError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Syscall Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Syscall Error")
     except ssl.SSLEOFError as err:
       logger.debug(f"ssl.SSLEOFError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL EOF Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL EOF Error")
     except ssl.SSLCertVerificationError as err:
       logger.debug(f"ssl.SSLCertVerificationError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Certificate Verification Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Verification Error")
     except ssl.CertificateError as err:
       logger.debut(f"ssl.CertificateError for {self.__url.host()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE, "SSL Certificate Error")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Error")
     except timeout:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {timeout}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TIMEOUT, "Socket timeout")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when completing SSL handshake for {self.__url.host()} - {err}")
       raise err
@@ -178,10 +167,10 @@ class Request:
       return True
     except RemoteCertificateExpired as err:
       logger.debug(f"RemoteCertificateExpired: {self.__url.netloc()} has an expired certificate. {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_SSL_EXPIRED_CERT, "Certificate expired")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "Certificate expired")
     except TofuCertificateRejection as err:
       logger.debug(f"TofuCertificateRejection: {self.__url.netloc()} has an untrusted, unknown certificate. {err}")
-      return ResponseFactory.create(self.__url, TofuCertificateRejection, "Untrusted certificate (TOFU rejection)")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "Untrusted certificate (TOFU rejection)")
     except Exception as err:
       logger.error(f"Unknown exception encountered when validating ssl certificate on {self.__url.netloc()} - {err}")
       raise err
@@ -207,19 +196,29 @@ class Request:
     '''
     Handles basic response data from the remote server and hands off to the Response object
     '''
+    error = False
+    
+    try:
+      status, meta = re.split(GEMINI_RESPONSE_HEADER_SEPARATOR, header, maxsplit=1)
 
-    status, meta = header.split(GEMINI_RESPONSE_HEADER_SEPARATOR, maxsplit=1)
+      if not re.match(r"^\d{2}$", status):
+        raise Exception("Response status is not a two-digit code")
 
-    if not re.match(r"^\d{2}$", status) or len(meta) > GEMINI_RESPONSE_HEADER_META_MAXLENGTH:
+      if len(meta) > GEMINI_RESPONSE_HEADER_META_MAXLENGTH:
+        raise Exception("Header meta text is too long")
+
       return ResponseFactory.create(
         self.__url,
-        RESPONSE_STATUSDETAIL_ERROR_BAD_RESPONSE,
-        "Bad response header from server"
+        status, 
+        meta.strip(),
+        raw_body
+      )
+    except Exception as err:
+      return ResponseFactory.create(
+        self.__url,
+        RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
+        err
       )
 
-    return ResponseFactory.create(
-      self.__url,
-      status, 
-      meta.strip(),
-      raw_body
-    )
+  
+    

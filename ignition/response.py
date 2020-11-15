@@ -1,19 +1,8 @@
 '''
-titan2 - Gemini Protocol Client Transport Library
-Copyright (C) 2020  Chris Brousseau
-
-titan2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-titan2 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL
+was not distributed with this file, You can obtain one 
+at http://mozilla.org/MPL/2.0/.
 '''
 
 import cgi
@@ -112,35 +101,26 @@ class BaseResponse:
 class ErrorResponse(BaseResponse):
   '''
   ErrorResponse
-  This is a custom response type for titan2, to handle any responses representing request errors
+  This is a custom response type for ignition, to handle any responses representing request errors
   that are outside of the scope of the Gemini protocol.  Included options are:
 
-  00: RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST
-  This status code means that the host could not be found
+  00: RESPONSE_STATUSDETAIL_ERROR_NETWORK
+  Any errors that occur at the network level, and prevented the client from making any connection 
+  with external services.
 
-  01: RESPONSE_STATUSDETAIL_ERROR_TIMEOUT
-  This status code means that a timeout was encountered when connecting to host
+  01: RESPONSE_STATUSDETAIL_ERROR_DNS = "01"
+  Any errors at the DNS level.
 
-  02: RESPONSE_STATUSDETAIL_ERROR_REFUSED
-  This status code means that the connection was refused by the host
+  02: RESPONSE_STATUSDETAIL_ERROR_HOST
+  Any errors connecting to the host (timeout, refused, etc.).
 
-  03: RESPONSE_STATUSDETAIL_ERROR_HOST_ERROR
-  This status code means that there was some other error with the host preventing the request from being completed successfully
+  03: RESPONSE_STATUSDETAIL_ERROR_TLS
+  Any errors associated with TLS/SSL, including handshake errors, certificate expired errors, 
+  and security errors like certificate rejection errors.
 
-  04: RESPONSE_STATUSDETAIL_ERROR_RESET
-  This status code means that the connection was reset by the host
-
-  05: RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE
-  This status code means that the SSL handshake failed
-
-  06: RESPONSE_STATUSDETAIL_ERROR_SSL_EXPIRED_CERT
-  This status code means that the SSL certificate returned by the host was expired
-
-  07: RESPONSE_STATUSDETAIL_ERROR_SSL_TOFU_REJECT
-  This status code means that the SSL handshake failed due to TOFU security validation
-
-  08: RESPONSE_STATUSDETAIL_ERROR_BAD_RESPONSE
-  This status code means that the response receive from the server did not meet Gemini protocol specifications
+  04: RESPONSE_STATUSDETAIL_ERROR_PROTOCOL
+  Any errors where a secure message is received from the server, but it does not conform to the 
+  Gemini protocol requirements and cannot be processed.
   '''
 
   def data(self):

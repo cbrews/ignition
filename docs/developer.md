@@ -1,4 +1,4 @@
-# Developing for Titan2
+# Developing for Ignition
 
 ## Contributing Guidelines
 

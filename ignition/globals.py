@@ -1,19 +1,8 @@
 '''
-titan2 - Gemini Protocol Client Transport Library
-Copyright (C) 2020  Chris Brousseau
-
-titan2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-titan2 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL
+was not distributed with this file, You can obtain one 
+at http://mozilla.org/MPL/2.0/.
 '''
 
 CRLF = "\r\n"
@@ -25,7 +14,7 @@ GEMINI_SCHEME = 'gemini'
 GEMINI_PORT = 1965
 GEMINI_DEFAULT_MIME_TYPE = 'text/gemini; charset=utf-8'
 GEMINI_DEFAULT_ENCODING = 'utf-8'
-GEMINI_RESPONSE_HEADER_SEPARATOR = ' '
+GEMINI_RESPONSE_HEADER_SEPARATOR = "\\s+"
 GEMINI_URL_MAXLENGTH = 1024
 GEMINI_RESPONSE_HEADER_META_MAXLENGTH = 1024
 
@@ -43,16 +32,11 @@ RESPONSE_STATUS_CLIENTCERT_REQUIRED = "6"
 '''
 Two-character response codes
 '''
-RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST = "00" 
-RESPONSE_STATUSDETAIL_ERROR_TIMEOUT = "01"
-RESPONSE_STATUSDETAIL_ERROR_REFUSED = "02"
-RESPONSE_STATUSDETAIL_ERROR_HOST_ERROR = "03"
-RESPONSE_STATUSDETAIL_ERROR_RESET = "04"
-RESPONSE_STATUSDETAIL_ERROR_SSL_HANDSHAKE = "05"
-RESPONSE_STATUSDETAIL_ERROR_SSL_EXPIRED_CERT = "06"
-RESPONSE_STATUSDETAIL_ERROR_SSL_TOFU_REJECT = "07"
-RESPONSE_STATUSDETAIL_ERROR_BAD_RESPONSE = "08"
-RESPONSE_STATUSDETAIL_ERROR_INVALID_STATUS = "09"
+RESPONSE_STATUSDETAIL_ERROR_NETWORK = "00"
+RESPONSE_STATUSDETAIL_ERROR_DNS = "01"
+RESPONSE_STATUSDETAIL_ERROR_HOST = "02"
+RESPONSE_STATUSDETAIL_ERROR_TLS = "03"
+RESPONSE_STATUSDETAIL_ERROR_PROTOCOL = "04"
 RESPONSE_STATUSDETAIL_INPUT = "10"
 RESPONSE_STATUSDETAIL_INPUT_SENSITIVE = "11"
 RESPONSE_STATUSDETAIL_SUCCESS = "20"
@@ -73,7 +57,7 @@ RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED_NOT_AUTHORIZED = "61"
 RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED_NOT_VALID = "62"
 
 '''
-titan2 application defaults
+ignition application defaults
 '''
 DEFAULT_REQUEST_TIMEOUT = 30
 DEFAULT_HOSTS_FILE = '.known_hosts'

@@ -1,0 +1,10 @@
+LICENSE NOTICE
+
+AS PER SECTION 3 OF PSF LICENSE AGREEMENT FOR PYTHON 3.8.0
+
+THE FOLLOWING CHANGES HAVE BEEN MADE TO THE PYTHON SOURCE CODE:
+
+1. Changes to python library file at Lib/urllib/parse.py:
+  * Added additional protocol scheme "gemini" to `uses_relative` list of protocols.
+  * Added additional protocol scheme "gemini" to `uses_netloc` list of protocols.
+  * Added additional protocol scheme "gemini" to `uses_params` list of protocols.

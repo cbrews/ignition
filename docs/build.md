@@ -1,11 +1,11 @@
-# Building titan2
+# Building ignition
 
-To build titan2, following these steps:
+To build ignition, following these steps:
 
 Ensure that your version is set in setup.py
 ```python
 setup(
-    name='titan2',
+    name='ignition-gemini',
     version='0.1.0.dev1', # See versioning details here: https://www.python.org/dev/peps/pep-0440/
     # ...
 )

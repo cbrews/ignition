@@ -1,25 +1,16 @@
 '''
-titan2 - Gemini Protocol Client Transport Library
-Copyright (C) 2020  Chris Brousseau
-
-titan2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-titan2 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL
+was not distributed with this file, You can obtain one 
+at http://mozilla.org/MPL/2.0/.
 '''
 
 import cryptography
 from cryptography import x509
 import datetime
 from typing import Dict, Tuple
+
+from .globals import *
 
 class RemoteCertificateExpired(Exception):
   '''
@@ -56,7 +47,7 @@ class CertRecord:
     Generate a CertRecord from a string in the format:
     [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
     '''
-    hostname, fingerprint_with_expiration = host_string.split(' ', maxsplit=1)
+    hostname, fingerprint_with_expiration = host_string.strip().split(' ', maxsplit=1)
     fingerprint, expiration = fingerprint_with_expiration.split(';EXPIRES=')
     expiration_datetime = datetime.datetime.fromisoformat(expiration)
 
@@ -67,7 +58,7 @@ class CertRecord:
     Converts a CertRecord to a string in the format:
     [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
     '''
-    return self.hostname + ' ' + self.fingerprint + ';EXPIRES=' + self.expiration.isoformat()
+    return self.hostname + ' ' + self.fingerprint + ';EXPIRES=' + self.expiration.isoformat() + CRLF
 
   def is_expired(self):
     '''

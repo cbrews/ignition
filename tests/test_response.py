@@ -1,24 +1,13 @@
 '''
-titan2 - Gemini Protocol Client Transport Library
-Copyright (C) 2020  Chris Brousseau
-
-titan2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-titan2 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with titan2.  If not, see <https://www.gnu.org/licenses/>.
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL
+was not distributed with this file, You can obtain one 
+at http://mozilla.org/MPL/2.0/.
 '''
 
 import unittest
 
-from titan2.response import (
+from ignition.response import (
   ResponseFactory, 
   BaseResponse, 
   ErrorResponse, 
@@ -29,7 +18,7 @@ from titan2.response import (
   PermFailureResponse, 
   ClientCertRequiredResponse
 )
-from titan2.globals import (
+from ignition.globals import (
   RESPONSE_STATUS_ERROR, 
   RESPONSE_STATUS_INPUT, 
   RESPONSE_STATUS_SUCCESS, 
@@ -37,9 +26,11 @@ from titan2.globals import (
   RESPONSE_STATUS_TEMP_FAILURE, 
   RESPONSE_STATUS_PERM_FAILURE, 
   RESPONSE_STATUS_CLIENTCERT_REQUIRED,
-  RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST,
-  RESPONSE_STATUSDETAIL_ERROR_BAD_RESPONSE,
-  RESPONSE_STATUSDETAIL_ERROR_INVALID_STATUS,
+  RESPONSE_STATUSDETAIL_ERROR_NETWORK,
+  RESPONSE_STATUSDETAIL_ERROR_DNS,
+  RESPONSE_STATUSDETAIL_ERROR_HOST,
+  RESPONSE_STATUSDETAIL_ERROR_TLS,
+  RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
   RESPONSE_STATUSDETAIL_INPUT,
   RESPONSE_STATUSDETAIL_SUCCESS,
   RESPONSE_STATUSDETAIL_REDIRECT_TEMPORARY,
@@ -329,7 +320,7 @@ class ErrorResponseTests(unittest.TestCase):
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
-      RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST, 
+      RESPONSE_STATUSDETAIL_ERROR_DNS, 
       meta='Could not find a host at test.com.'
     )
   
@@ -340,7 +331,7 @@ class ErrorResponseTests(unittest.TestCase):
     self.assertEqual(self.response.basic_status, RESPONSE_STATUS_ERROR)
 
   def test_status(self):
-    self.assertEqual(self.response.status, RESPONSE_STATUSDETAIL_ERROR_UNKNOWN_HOST)
+    self.assertEqual(self.response.status, RESPONSE_STATUSDETAIL_ERROR_DNS)
 
   def test_meta(self):
     self.assertEqual(self.response.meta, 'Could not find a host at test.com.')
@@ -378,7 +369,7 @@ class ErrorResponseUnknownStatusTests(unittest.TestCase):
     self.assertEqual(self.response.basic_status, RESPONSE_STATUS_ERROR)
 
   def test_status(self):
-    self.assertEqual(self.response.status, RESPONSE_STATUSDETAIL_ERROR_INVALID_STATUS)
+    self.assertEqual(self.response.status, RESPONSE_STATUSDETAIL_ERROR_PROTOCOL)
 
   def test_meta(self):
     self.assertEqual(self.response.meta, 'Invalid response received from the server, status code: 99')
