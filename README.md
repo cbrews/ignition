@@ -1,4 +1,4 @@
-# Ignition - Gemini Protocol Client Transport Library for Python3
+# Ignition: Python3 Gemini Protocol Client Transport Library
 
 ![This is Gemini Control.  We're at T-1 minute, T-60 seconds and counting.  T-45 seconds and counting.  The range holding a final status check.  T-30 seconds.  Recorders have gone to fast speed.  Twenty seconds.  Fifteen seconds.  Ten, nine, eight, seven, six, five, four, three, two, one zero.  Ignition.](docs/img/transcript-1.png)
 
