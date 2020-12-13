@@ -1,14 +1,6 @@
 # Developing for Ignition
 
-## Contributing Guidelines
-
-### Code of Conduct
-
-### Bug Reporting
-
-### Feature Requests
-
-### How to Contribute Code
+This section is still under development!
 
 ## Developing
 
@@ -47,3 +39,17 @@ $ pytest
 
 ### Version testing
 Version testing is currently handled within Github actions.
+
+## Contributing Guidelines
+
+### Code of Conduct
+Coming soon!
+
+### Bug Reporting
+Coming soon!
+
+### Feature Requests
+Coming soon!
+
+### How to Contribute Code
+Coming soon!
