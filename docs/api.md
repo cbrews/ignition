@@ -14,6 +14,11 @@ The Ignition library exposes a package `ignition` that contains all of the funct
 ## ignition
 *Source Code: [src/\_\_init\_\_.py](../src/__init__.py)*
 
+Load this with
+```python
+import ignition
+```
+
 This class cannot be instantiated directly.
 
 ### Methods
