@@ -13,12 +13,12 @@ In order to provide a best-in-class interface, this library does not implement t
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
-Ignition is currently in pre-Alpha status, which means that subsequent releases could introduce breaking changes that affect the API.  You use Ignition at your own risk and agree to monitor this repository for changes until a stable version is released.
+Ignition is currently in the final stages of pre-Alpha development.  It is not yet released!  You use Ignition at your own risk and agree to monitor this repository for changes until a stable version is released.
 
 ## Installation
 ⚠ Ignition currently supports Python versions 3.7 - 3.9.
 
-You can currently install Ignition via pip.  I typically recommend you do this within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+You will be able to install Ignition via pip shortly.  I typically recommend you do this within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 ```bash
 pip install ignition-gemini
