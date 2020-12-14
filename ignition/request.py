@@ -35,7 +35,7 @@ class Request:
      the Response object
   '''
 
-  def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None, ca_cert_file=None):
+  def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None, ca_cert=None):
     '''
     Initializes Response with a url, referer, and timeout
     '''
@@ -43,7 +43,7 @@ class Request:
     self.__url = URL(url, referer_url=referer)
     self.timeout = request_timeout
     self.__cert_store = cert_store
-    self.__ca_cert_file = ca_cert_file
+    self.__ca_cert = ca_cert # This should be a tuple
 
   def set_timeout(self, request_timeout: float):
     '''
@@ -120,10 +120,10 @@ class Request:
     '''
 
     try:
-      if self.__ca_cert_file:
-        context = self.__setup_ssl_client_certificate_context()
-      else:
-        context = self.__setup_ssl_default_context()
+      context = self.__setup_ssl_default_context()
+
+      if self.is_using_ca_cert():
+        self.__setup_ssl_client_certificate_context(context)
 
       secure_socket_result = context.wrap_socket(socket, server_hostname=self.__url.host())
       return secure_socket_result
@@ -180,6 +180,12 @@ class Request:
     else:
       return None
 
+  def is_using_ca_cert(self):
+    '''
+    Returns if the request is using ca_cert
+    '''
+    return self.__ca_cert is not None
+
   def __setup_ssl_default_context(self):
     '''
     Setup an SSL default context (without a client certificate)
@@ -192,14 +198,12 @@ class Request:
     context.verify_mode = ssl.CERT_NONE
     return context
 
-  def __setup_ssl_client_certificate_context(self):
+  def __setup_ssl_client_certificate_context(self, context):
     '''
-    WIP
+    Load cert chain for client certificate
     '''
-    context = ssl.create_default_context()
-    context.load_verify_locations(self.__ca_cert_file)
-    context.verify_mode = ssl.CERT_NONE
-    return context
+    cert, key = self.__ca_cert
+    context.load_cert_chain(cert, key)
 
   def __transport_payload(self, socket, payload):
     '''

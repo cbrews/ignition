@@ -32,6 +32,8 @@ If a *referer* is provided, a dynamic URL is constructed by ignition to send a r
 
 If a *timeout* is provided, this will specify the client timeout (in seconds) for this request.  The default is 30 seconds.  See also `ignition.set_default_timeout` to change the default timeout.
 
+If a *ca_cert* is provided, the certificate will be sent to the server as a CA CERT.  You will need to provide the paths to both the certificate and the key in this case.
+
 Depending on the response from the server, as per Gemini specification, the corresponding response type will be returned.
 
 * If the response status begins with "1", the response type is `INPUT`, and will return a response of type [ignition.InputResponse](#ignitioninputresponse).
@@ -46,6 +48,7 @@ Parameters:
 * url: `string`
 * referer: `string` (optional)
 * timeout: `float` (optional)
+* ca_cert: `Tuple(cert_file, key_file)` (optional)
 
 Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`
 

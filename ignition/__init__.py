@@ -88,7 +88,7 @@ def url(url, referer=None):
   dummy_req = Request(url, referer=referer)
   return dummy_req.get_url()
 
-def request(url, referer=None, timeout=None, ca_cert_file=None):
+def request(url, referer=None, timeout=None, ca_cert=None):
   '''
   Given a *url* to a Gemini capsule, this performs a request to the specified 
   url and returns a response (as a subclass of [ignition.BaseResponse](#ignitionbaseresponse)) 
@@ -107,6 +107,9 @@ def request(url, referer=None, timeout=None, ca_cert_file=None):
   for this request.  The default is 30 seconds.  See also `ignition.set_default_timeout` 
   to change the default timeout.
 
+  If a *ca_cert* is provided, the certificate will be sent to the server as a CA CERT.
+  You will need to provide the paths to both the certificate and the key in this case.
+
   Depending on the response from the server, as per Gemini specification, the 
   corresponding response type will be returned.
 
@@ -122,11 +125,12 @@ def request(url, referer=None, timeout=None, ca_cert_file=None):
   * url: `string`
   * referer: `string` (optional)
   * timeout: `float` (optional)
+  * ca_cert: `Tuple(cert_file, key_file)` (optional)
 
   Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`
   '''
 
-  req = Request(url, cert_store=__cert_store, request_timeout=__timeout, referer=referer, ca_cert_file=ca_cert_file)
+  req = Request(url, cert_store=__cert_store, request_timeout=__timeout, referer=referer, ca_cert=ca_cert)
 
   if timeout:
     req.set_timeout(timeout)
