@@ -13,12 +13,12 @@ In order to provide a best-in-class interface, this library does not implement t
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
-Ignition is currently in the final stages of pre-Alpha development.  It is not yet released!  You use Ignition at your own risk and agree to monitor this repository for changes until a stable version is released.
+Ignition is currently in prerelease.  You can use Ignition today at your own risk, please monitor this repository for changes until version 1.0 is released.  Please be advised that there may be breaking changes in the API until that time.
 
 ## Installation
 ⚠ Ignition currently supports Python versions 3.7 - 3.9.
 
-You will be able to install Ignition via pip shortly.  I typically recommend you do this within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+Ignition can be installed via [PIP](https://pypi.org/project/ignition-gemini/).  You should install it in alignment with your current development process; if you do not have a build process yet, I recommend you install within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 ```bash
 pip install ignition-gemini
@@ -140,6 +140,8 @@ Full API documentation for Ignition is available [here](./docs/api.md).
 ![There are a few reports from the pilots.  They are simply identifying their flight plan very carefully.  Four minutes into the flight, Gordon Cooper just told Grissom that he is looking mighty good.  Gus gave him a reasuring laugh.  A very calm pilot in command of that spacecraft.](docs/img/transcript-4.png)
 
 Want to help contribute to Ignition?  See the [developer documentation](./docs/developer.md) for contribution guidelines, build processes, and testing.
+
+The developer documentation is still being completed, if you have specific questions, please open tickets within this project.
 
 ## License
 Ignition is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/).
