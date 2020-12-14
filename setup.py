@@ -15,7 +15,7 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     name='ignition-gemini',
-    version='0.1.0.a5',
+    version='0.1.0',
     description=short_description,
     long_description=long_description,
     long_description_content_type='text/markdown',

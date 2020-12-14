@@ -201,6 +201,7 @@ class Request:
   def __setup_ssl_client_certificate_context(self, context):
     '''
     Load cert chain for client certificate
+    TODO: Better error handling here?
     '''
     cert, key = self.__ca_cert
     context.load_cert_chain(cert, key)
