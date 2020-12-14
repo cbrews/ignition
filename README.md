@@ -8,6 +8,8 @@ If you're building a Python3 application that uses Gemini, Ignition is your gate
 
 In order to provide a best-in-class interface, this library does not implement the other parts of a typical client (including user interface and/or command line interface), and instead focuses on providing a robust programmatic API interface.  This project also assumes that different user interfaces will have different requirements for their display of text/gemini files (.gmi), and/or other mime-types, and as such considers this portion of the specification beyond the scope of this project.
 
+In addition, in order to provide stability and simplicity, minimal third-party dependencies are required for Ignition.
+
 ## Project Status
 ![Python CI](https://github.com/cbrews/ignition/workflows/Python%20CI/badge.svg)
 
