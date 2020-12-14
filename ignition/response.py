@@ -40,7 +40,7 @@ class ResponseFactory:
     if factory_class is None:
       return ErrorResponse(
         url, 
-        RESPONSE_STATUSDETAIL_ERROR_INVALID_STATUS, 
+        RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, 
         f"Invalid response received from the server, status code: {status}",
         None
       )
