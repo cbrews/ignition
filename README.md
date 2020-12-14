@@ -1,4 +1,4 @@
-# Ignition - Gemini Protocol Client Transport Library
+# Ignition: Python3 Gemini Protocol Client Transport Library
 
 ![This is Gemini Control.  We're at T-1 minute, T-60 seconds and counting.  T-45 seconds and counting.  The range holding a final status check.  T-30 seconds.  Recorders have gone to fast speed.  Twenty seconds.  Fifteen seconds.  Ten, nine, eight, seven, six, five, four, three, two, one zero.  Ignition.](docs/img/transcript-1.png)
 
@@ -13,12 +13,12 @@ In order to provide a best-in-class interface, this library does not implement t
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
-Ignition is currently in pre-Alpha status, which means that subsequent releases could introduce breaking changes that affect the API.  You use Ignition at your own risk and agree to monitor this repository for changes until a stable version is released.
+Ignition is currently in the final stages of pre-Alpha development.  It is not yet released!  You use Ignition at your own risk and agree to monitor this repository for changes until a stable version is released.
 
 ## Installation
 ⚠ Ignition currently supports Python versions 3.7 - 3.9.
 
-You can currently install Ignition via pip.  I typically recommend you do this within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+You will be able to install Ignition via pip shortly.  I typically recommend you do this within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 ```bash
 pip install ignition-gemini
