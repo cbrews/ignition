@@ -88,7 +88,7 @@ def url(url, referer=None):
   dummy_req = Request(url, referer=referer)
   return dummy_req.get_url()
 
-def request(url, referer=None, timeout=None):
+def request(url, referer=None, timeout=None, ca_cert_file=None):
   '''
   Given a *url* to a Gemini capsule, this performs a request to the specified 
   url and returns a response (as a subclass of [ignition.BaseResponse](#ignitionbaseresponse)) 
@@ -125,7 +125,8 @@ def request(url, referer=None, timeout=None):
 
   Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`
   '''
-  req = Request(url, cert_store=__cert_store, request_timeout=__timeout, referer=None)
+
+  req = Request(url, cert_store=__cert_store, request_timeout=__timeout, referer=referer, ca_cert_file=ca_cert_file)
 
   if timeout:
     req.set_timeout(timeout)
