@@ -35,7 +35,7 @@ class Request:
      the Response object
   '''
 
-  def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None):
+  def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None, ca_cert_file=None):
     '''
     Initializes Response with a url, referer, and timeout
     '''
@@ -43,6 +43,7 @@ class Request:
     self.__url = URL(url, referer_url=referer)
     self.timeout = request_timeout
     self.__cert_store = cert_store
+    self.__ca_cert_file = ca_cert_file
 
   def set_timeout(self, request_timeout: float):
     '''
@@ -119,9 +120,11 @@ class Request:
     '''
 
     try:
-      context = ssl.create_default_context()
-      context.check_hostname = False
-      context.verify_mode = ssl.CERT_NONE
+      if self.__ca_cert_file:
+        context = self.__setup_ssl_client_certificate_context()
+      else:
+        context = self.__setup_ssl_default_context()
+
       secure_socket_result = context.wrap_socket(socket, server_hostname=self.__url.host())
       return secure_socket_result
     except ssl.SSLError as err:
@@ -176,6 +179,27 @@ class Request:
       raise err
     else:
       return None
+
+  def __setup_ssl_default_context(self):
+    '''
+    Setup an SSL default context (without a client certificate)
+    This will bypass certificate validation against a CA.
+    TOFU validation will be completed after the request is completed.
+    '''
+
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    return context
+
+  def __setup_ssl_client_certificate_context(self):
+    '''
+    WIP
+    '''
+    context = ssl.create_default_context()
+    context.load_verify_locations(self.__ca_cert_file)
+    context.verify_mode = ssl.CERT_NONE
+    return context
 
   def __transport_payload(self, socket, payload):
     '''
