@@ -43,6 +43,7 @@ response = ignition.request('//gemini.circumlunar.space')
 # Print full response from remote capsule
 print(response)
 ```
+[source](examples/simple-usage.py)
 
 In **all** cases, Ignition assumes that the specified endpoint and protocol will respond over the Gemini protocol, so even if you provide a different protocol or port, it will assume that the endpoint is a Gemini capsule.
 
@@ -78,10 +79,10 @@ More advanced request usage:
 ```python
 import ignition
 
-response = ignition.request('/servers', referer='//gemini.circumlunar.space:1965')
+response = ignition.request('/software', referer='//gemini.circumlunar.space:1965')
 
 print("Got back response %s from %s" % (response.status, response.url))
-# Got back a response 20 from gemini://gemini.circumlunar.space/servers
+# Got back a response 20 from gemini://gemini.circumlunar.space/software
 
 if not response.success():
   print("There was an error on the response.")
@@ -94,16 +95,18 @@ Passing a referer:
 import ignition
 
 response1 = ignition.request('//gemini.circumlunar.space')
-response2 = ignition.request('home', referer=response1.url)
+response2 = ignition.request('software', referer=response1.url)
 
 print(response2)
 ```
+[source](examples/using-referer.py)
 
 More advanced response validation:
 ```python
 import ignition
 
-response = ignition.request('//gemini.circumlunar.space')
+url = '//gemini.circumlunar.space'
+response = ignition.request(url)
 
 if response.is_a(ignition.SuccessResponse):
   print('Success!')
@@ -116,17 +119,18 @@ elif response.is_a(ignition.RedirectResponse):
   print('Received response, redirect to: %s' % (response.data()))
 
 elif response.is_a(ignition.TempFailureResponse):
-  print('Error from server: %s' % (response.data())
+  print('Error from server: %s' % (response.data()))
 
 elif response.is_a(ignition.PermFailureResponse):
-  print('Error from server: %s' % (response.data())
+  print('Error from server: %s' % (response.data()))
 
 elif response.is_a(ignition.ClientCertRequiredResponse):
-  print('Client certificate required. %s' % (response.data())
+  print('Client certificate required. %s' % (response.data()))
 
 elif response.is_a(ignition.ErrorResponse):
-  print('There was an error on the request: %s' % (response.data())
+  print('There was an error on the request: %s' % (response.data()))
 ```
+[source](examples/advanced-usage.py)
 
 ## API Documentation
 Full API documentation for Ignition is available [here](./docs/api.md).
