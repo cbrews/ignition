@@ -5,7 +5,7 @@ was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
-from ignition.request import request
+import ignition
 
 url = '//gemini.circumlunar.space'
 response = ignition.request(url)
