@@ -33,6 +33,6 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     python_requires='>=3.7, <4',
     install_requires=[
-      'cryptography'
+      'cryptography>=3.0'
     ]
 )
