@@ -7,6 +7,7 @@ at http://mozilla.org/MPL/2.0/.
 
 import cryptography
 from cryptography import x509
+from cryptography.hazmat.backends import default_backend
 import datetime
 from typing import Dict, Tuple
 
@@ -124,7 +125,7 @@ class CertStore:
     Extracts the public key & expiration date from the cert
     Returns a public key openssh fingerprint
     '''
-    cert = x509.load_der_x509_certificate(raw_certificate)
+    cert = x509.load_der_x509_certificate(raw_certificate, default_backend())
     expiration = cert.not_valid_after
     public_key_fingerprint = cert.public_key().public_bytes(
       cryptography.hazmat.primitives.serialization.Encoding.OpenSSH,
