@@ -2,6 +2,10 @@
 
 This section is still under development!
 
+## Contributing
+
+If you run into an issue, please go ahead and open a PR or an issue for any issues found.  Please ensure that all tests pass and things look clean.  It's likely that there are unknown issues in the library today.
+
 ## Developing
 
 ### Local Environment Setup
@@ -52,18 +56,3 @@ We will always appreciate good faith conversation and contribution in the commun
 There will always be issues with code, in such scenarios please know that the developer is interested in engaging in remediation or resolution at their convenience, given that this is in no means a primary source of business or income.
 
 The developer will make a best effort to maintain backwards compatibility after release 1.0 as possible but in certain circumstances such compatibility may not be possible.
-
-### Bug Reporting
-Please use the ticketing system within Github for any issues.
-
-More details coming soon!
-
-### Feature Requests
-Please use the ticketing system and open a ticket before opening a PR.
-
-More details coming soon!
-
-### How to Contribute Code
-Please use the pull request system within Github for any contributions.
-
-More details coming soon!
