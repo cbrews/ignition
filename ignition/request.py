@@ -91,8 +91,7 @@ class Request:
     '''
 
     try:
-      sock = socket.create_connection((self.__url.host(), self.__url.port()))
-      sock.settimeout(self.timeout)
+      sock = socket.create_connection((self.__url.host(), self.__url.port()), timeout=self.timeout)
       logger.debug(f"Created socket connection: {sock}")
       return sock
     except ConnectionRefusedError as err:
