@@ -93,7 +93,8 @@ class InputResponseTests(unittest.TestCase):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_INPUT, 
-      meta='Enter a username'
+      meta='Enter a username',
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -122,6 +123,9 @@ class InputResponseTests(unittest.TestCase):
   def test_data(self):
     self.assertEqual(self.response.data(), 'Enter a username')
 
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
+
 class SuccessResponseTests(unittest.TestCase):
   '''
   Handles SuccessResponse type
@@ -132,7 +136,8 @@ class SuccessResponseTests(unittest.TestCase):
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_SUCCESS, 
       meta='text/gemini; charset=utf-8',
-      raw_body=b"This is a sample body\r\n\r\nHello"
+      raw_body=b"This is a sample body\r\n\r\nHello",
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -159,6 +164,9 @@ class SuccessResponseTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), 'This is a sample body\r\n\r\nHello')
+  
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
 
 class RedirectResponseTests(unittest.TestCase):
   '''
@@ -169,7 +177,8 @@ class RedirectResponseTests(unittest.TestCase):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_REDIRECT_TEMPORARY,
-      meta='gemini://test-new.com/'
+      meta='gemini://test-new.com/',
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -197,6 +206,9 @@ class RedirectResponseTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), 'gemini://test-new.com/')
+  
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
 
 class TempFailureResponseTests(unittest.TestCase):
   '''
@@ -207,7 +219,8 @@ class TempFailureResponseTests(unittest.TestCase):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_TEMP_FAILURE, 
-      meta='The server had trouble processing your response. Please try again.'
+      meta='The server had trouble processing your response. Please try again.',
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -235,6 +248,9 @@ class TempFailureResponseTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), '40 The server had trouble processing your response. Please try again.')
+  
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
 
 class PermFailureResponseTests(unittest.TestCase):
   '''
@@ -245,7 +261,8 @@ class PermFailureResponseTests(unittest.TestCase):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_PERM_FAILURE, 
-      meta='There was a permanent error on this page.'
+      meta='There was a permanent error on this page.',
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -273,6 +290,9 @@ class PermFailureResponseTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), '50 There was a permanent error on this page.')
+  
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
 
 class ClientCertRequiredResponseTests(unittest.TestCase):
   '''
@@ -283,7 +303,8 @@ class ClientCertRequiredResponseTests(unittest.TestCase):
     self.response = ResponseFactory.create(
       'gemini://test.com/', 
       RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED, 
-      meta='Please create a client certificate for this request.'
+      meta='Please create a client certificate for this request.',
+      certificate='dummy cert object',
     )
   
   def test_url(self):
@@ -311,6 +332,9 @@ class ClientCertRequiredResponseTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), 'Please create a client certificate for this request.')
+  
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, 'dummy cert object')
 
 class ErrorResponseTests(unittest.TestCase):
   '''
@@ -349,6 +373,9 @@ class ErrorResponseTests(unittest.TestCase):
   def test_data(self):
     self.assertEqual(self.response.data(), 'Could not find a host at test.com.')
 
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, None)
+
 class ErrorResponseUnknownStatusTests(unittest.TestCase):
   '''
   Handles special ErrorResponse type for unmapped responses
@@ -386,6 +413,9 @@ class ErrorResponseUnknownStatusTests(unittest.TestCase):
 
   def test_data(self):
     self.assertEqual(self.response.data(), 'Invalid response received from the server, status code: 99')
+
+  def test_certificate(self):
+    self.assertEqual(self.response.certificate, None)
 
 class SuccessResponseAdvancedTests(unittest.TestCase):
   # TODO: More advanced tests around the success body response

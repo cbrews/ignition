@@ -6,9 +6,11 @@ at http://mozilla.org/MPL/2.0/.
 '''
 
 import cgi
+import cryptography
 import logging
 
 from .globals import *
+from .ssl.cert_wrapper import CertWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +22,7 @@ class ResponseFactory:
   '''
   
   @classmethod
-  def create(self, url: str, status: str, meta=None, raw_body=None):
+  def create(self, url: str, status: str, meta=None, raw_body=None, certificate=None):
     '''
     Given a url, status, and response data, generates the appropriate response type
     '''
@@ -42,10 +44,11 @@ class ResponseFactory:
         url, 
         RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, 
         f"Invalid response received from the server, status code: {status}",
-        None
+        None,
+        None,
       )
       
-    return factory_class(url, status, meta, raw_body)
+    return factory_class(url, status, meta, raw_body, certificate)
 
 class BaseResponse:
   '''
@@ -56,6 +59,7 @@ class BaseResponse:
   * status
   * meta
   * raw_body
+  * certificate
   '''
 
   url: str
@@ -63,16 +67,18 @@ class BaseResponse:
   status: str
   meta: str
   raw_body: bytes
+  certificate: cryptography.x509.Certificate
 
-  def __init__(self, url, status, meta, raw_body):
+  def __init__(self, url: str, status: str, meta: str, raw_body: bytes, certificate: cryptography.x509.Certificate):
     '''
-    Initializes a BaseResponse with the request url, status code, metadata, and raw body string
+    Initializes a BaseResponse with the request url, status code, metadata, raw body string, and remote certificate
     '''
     self.url = str(url)
     self.basic_status = status[0]
     self.status = status
     self.meta = meta
     self.raw_body = raw_body
+    self.certificate = certificate
 
   def is_a(self, response_class_type):
     '''

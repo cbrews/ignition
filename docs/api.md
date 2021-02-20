@@ -365,6 +365,11 @@ This member SHOULD be used to facilitate status-specific behavior by a client.
 
 Returns the fully qualified URL of the request after processing.  This value MAY be passed to subsequent responses in the `referer` field in order to help to construct fully qualified URLs on the request.
 
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*
+
+Returns the remote server certificate on a successful response.  If the type is [ignition.ErrorResponse](#ignitionerrorresponse), this will return `None`.
+
 ### Methods
 
 #### data() -> string
@@ -387,7 +392,7 @@ This is useful if you just need to confirm that the message contains a body or n
 
 Returns: `boolean`
 
-#### is_a(response_class_type: class) -> bool
+#### is_a(response_class_type: class) -> boolean
 Utility method to qualify the response type.  The response type from a request will be one of: ignition.ErrorResponse, ignition.InputResponse, ignition.SuccessResponse, ignition.RedirectResponse, ignition.TempFailureResponse, ignition.TempFailureResponse, ignition.PermFailureResponse, ignition.ClientCertRequiredResponse.  This will return `true` if the response type matches the current object type.
 
 This is recommended for use when routing behavior based on a response.
@@ -447,6 +452,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 #### url
 *type: `string`*
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
@@ -519,6 +529,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
 ### Methods
 
 #### data() -> string
@@ -584,6 +599,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 #### url
 *type: `string`*
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
@@ -658,6 +678,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
 ### Methods
 
 #### data() -> string
@@ -726,6 +751,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 #### url
 *type: `string`*
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
@@ -798,6 +828,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 
+#### certificate
+*type: [`cryptography.x509.Certificate`](https://cryptography.io/en/latest/x509/reference.html#x-509-certificate-object)*.
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
 ### Methods
 
 #### data() -> string
@@ -866,6 +901,11 @@ Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class f
 
 #### url
 *type: `string`*
+
+Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
+
+#### certificate
+*type: `None`*.
 
 Extended from [ignition.BaseResponse](#ignitionbaseresponse). See parent class for full details.
 

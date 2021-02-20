@@ -10,10 +10,13 @@ from socket import timeout
 import re
 import ssl
 import logging
+import cryptography
 
 from .globals import *
 from .response import BaseResponse, ResponseFactory
-from .cert_store import CertStore, RemoteCertificateExpired, TofuCertificateRejection
+from .ssl.cert_store import CertStore
+from .ssl.cert_wrapper import CertWrapper
+from .ssl.exceptions import RemoteCertificateExpired, TofuCertificateRejection
 from .url import URL
 
 logger = logging.getLogger(__name__)
@@ -75,15 +78,15 @@ class Request:
       return secure_socket_result
 
     logger.debug(f"Validating server certificate to {self.__url.netloc()}")
-    validation_result = self.__validate_ssl_certificate(secure_socket_result)
-    if isinstance(validation_result, BaseResponse):
-      return validation_result
+    ssl_certificate_result = self.__validate_ssl_certificate(secure_socket_result)
+    if isinstance(ssl_certificate_result, BaseResponse):
+      return ssl_certificate_result
 
     logger.debug(f"Sending request header: {self.__url}")
     header, raw_body = self.__transport_payload(secure_socket_result, self.__url)
 
     logger.debug(f"Received response header: [{header}] and payload of length {len(raw_body)} bytes")
-    return self.__handle_response(header, raw_body)
+    return self.__handle_response(header, raw_body, ssl_certificate_result.certificate)
 
   def __get_socket(self):
     '''
@@ -113,7 +116,7 @@ class Request:
       logger.error(f"Unknown exception encountered when connecting to {self.__url.netloc()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_NETWORK, "Networking error")
 
-  def __negotiate_ssl(self, socket, cafile=None):
+  def __negotiate_ssl(self, socket, cafile=None) -> ssl.SSLSocket:
     '''
     Negotiates a SSL handshake on the passed socket connection and returns the secure socket
     '''
@@ -156,17 +159,19 @@ class Request:
     except Exception as err:
       logger.error(f"Unknown exception encountered when completing SSL handshake for {self.__url.host()} - {err}")
       raise err
-    else:
-      return None
 
-  def __validate_ssl_certificate(self, secure_socket):
+  def __validate_ssl_certificate(self, secure_socket) -> CertWrapper:
     '''
     Trust-on-first-use (TOFU) validation on SSL certificate or throws exception
     '''
     
     try:
-      self.__cert_store.validate_tofu_or_add(secure_socket.server_hostname, secure_socket.getpeercert(True))
-      return True
+      certificate_wrapper = CertWrapper.parse(secure_socket.getpeercert(True))
+      self.__cert_store.validate_tofu_or_add(secure_socket.server_hostname, certificate_wrapper)
+      return certificate_wrapper
+    except ValueError as err:
+      logger.deubg(f"ValueError: {self.__url.netloc()}. {err}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, err)
     except RemoteCertificateExpired as err:
       logger.debug(f"RemoteCertificateExpired: {self.__url.netloc()} has an expired certificate. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "Certificate expired")
@@ -176,8 +181,6 @@ class Request:
     except Exception as err:
       logger.error(f"Unknown exception encountered when validating ssl certificate on {self.__url.netloc()} - {err}")
       raise err
-    else:
-      return None
 
   def is_using_ca_cert(self):
     '''
@@ -217,10 +220,8 @@ class Request:
     except Exception as err:
       logger.error(f"Unknown exception encountered when transporting data to {self.__url.netloc()} - {err}")
       raise err
-    else:
-      return None
 
-  def __handle_response(self, header, raw_body):
+  def __handle_response(self, header, raw_body, certificate: cryptography.x509.Certificate):
     '''
     Handles basic response data from the remote server and hands off to the Response object
     '''
@@ -239,7 +240,8 @@ class Request:
         self.__url,
         status, 
         meta.strip(),
-        raw_body
+        raw_body,
+        certificate
       )
     except Exception as err:
       return ResponseFactory.create(

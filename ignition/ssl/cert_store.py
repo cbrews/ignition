@@ -5,74 +5,12 @@ was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
-import cryptography
-from cryptography import x509
-from cryptography.hazmat.backends import default_backend
-import datetime
-from typing import Dict, Tuple
+from typing import Dict
 
-from .globals import *
+from .cert_record import CertRecord
+from .cert_wrapper import CertWrapper
+from .exceptions import RemoteCertificateExpired, TofuCertificateRejection
 
-class RemoteCertificateExpired(Exception):
-  '''
-  An exception type to handle expired certificates from the remote server.
-  This should throw if the remote certificate expiration date 
-  '''
-  pass
-
-class TofuCertificateRejection(Exception):
-  '''
-  An exception type handle TOFU (trust-on-first-use rejection).
-  '''
-  pass
-
-class CertRecord:
-  '''
-  Manages a single Certificate Record with a hostfile, signature, and expiration
-  '''
-  hostname: str
-  fingerprint: str
-  expiration: datetime.datetime
-
-  def __init__(self, hostname: str, fingerprint: str, expiration: datetime.datetime):
-    '''
-    Generate a CertRecord from logic; passing in the hostname, fingerprint, and expiration
-    '''
-    self.hostname = hostname
-    self.fingerprint = fingerprint
-    self.expiration = expiration
-
-  @classmethod
-  def from_string(self, host_string: str):
-    '''
-    Generate a CertRecord from a string in the format:
-    [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
-    '''
-    hostname, fingerprint_with_expiration = host_string.strip().split(' ', maxsplit=1)
-    fingerprint, expiration = fingerprint_with_expiration.split(';EXPIRES=')
-    expiration_datetime = datetime.datetime.fromisoformat(expiration)
-
-    return CertRecord(hostname, fingerprint, expiration_datetime)
-
-  def to_string(self):
-    '''
-    Converts a CertRecord to a string in the format:
-    [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
-    '''
-    return self.hostname + ' ' + self.fingerprint + ';EXPIRES=' + self.expiration.isoformat() + CRLF
-
-  def is_expired(self):
-    '''
-    Returns true if the expiration date on the cert record is before now
-    '''
-    return self.expiration < self.now()
-
-  def now(self):
-    '''
-    Utility function to get current datetime, extracted for testing purposes
-    Returns datetime
-    '''
-    return datetime.datetime.now()
 
 class CertStore:
   '''
@@ -95,7 +33,7 @@ class CertStore:
     '''
     self.__hosts_file = hosts_file
 
-  def validate_tofu_or_add(self, hostname: str, raw_certificate: bytes) -> bool:
+  def validate_tofu_or_add(self, hostname: str, cert: CertWrapper) -> bool:
     '''
     Given the hostname & correspoding certificate, this function:
     1. Checks to see if the certificate is expired (if so, it throws a RemoteCertificateExpired exception)
@@ -105,8 +43,7 @@ class CertStore:
       c. If there is a local cert record, but it's expired, save the certificate record locally, and return success
       d. If there is a local cert record, and it's not expired, but it does not match the passed certificate, throw TofuCertificateRejection
     '''
-    fingerprint, expiration = self.__parse_raw_certificate(raw_certificate)
-    remote_cert_record = CertRecord(hostname, fingerprint, expiration)
+    remote_cert_record = CertRecord(hostname, cert.fingerprint(), cert.expiration())
 
     if remote_cert_record.is_expired():
       raise RemoteCertificateExpired
@@ -118,21 +55,6 @@ class CertStore:
 
     self.__add_cert_record(remote_cert_record)
     return True
-
-  def __parse_raw_certificate(self, raw_certificate: bytes) -> Tuple[str, str]:
-    '''
-    Takes as input the raw certificate from the TCP socket
-    Extracts the public key & expiration date from the cert
-    Returns a public key openssh fingerprint
-    '''
-    cert = x509.load_der_x509_certificate(raw_certificate, default_backend())
-    expiration = cert.not_valid_after
-    public_key_fingerprint = cert.public_key().public_bytes(
-      cryptography.hazmat.primitives.serialization.Encoding.OpenSSH,
-      cryptography.hazmat.primitives.serialization.PublicFormat.OpenSSH
-    ).decode('utf-8')
-
-    return (public_key_fingerprint, expiration)
 
   def __get_cert_record(self, hostname: str) -> CertRecord:
     '''

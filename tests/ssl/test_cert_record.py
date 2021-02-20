@@ -5,11 +5,12 @@ was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
-import unittest
-import mock
 import datetime
+import mock
+import unittest
 
-from ignition.cert_store import CertRecord
+from ignition.ssl.cert_record import CertRecord
+
 
 class CertRecordTests(unittest.TestCase):
   def setUp(self):
@@ -36,7 +37,7 @@ class CertRecordTests(unittest.TestCase):
       'myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\r\n'
     )
 
-  @mock.patch('ignition.cert_store.datetime')
+  @mock.patch('ignition.ssl.cert_record.datetime')
   def test_is_expired(self, datetime_mock):
     mocked_date_value = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
     datetime_mock.datetime.now = mock.Mock(return_value=mocked_date_value)
