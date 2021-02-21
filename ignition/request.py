@@ -170,7 +170,7 @@ class Request:
       self.__cert_store.validate_tofu_or_add(secure_socket.server_hostname, certificate_wrapper)
       return certificate_wrapper
     except ValueError as err:
-      logger.deubg(f"ValueError: {self.__url.netloc()}. {err}")
+      logger.debug(f"ValueError: {self.__url.netloc()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, err)
     except RemoteCertificateExpired as err:
       logger.debug(f"RemoteCertificateExpired: {self.__url.netloc()} has an expired certificate. {err}")
