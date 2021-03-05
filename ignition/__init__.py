@@ -6,7 +6,7 @@ at http://mozilla.org/MPL/2.0/.
 '''
 
 from .globals import *
-from .cert_store import CertStore
+from .ssl.cert_store import CertStore
 from .request import Request
 from .response import ErrorResponse, InputResponse, SuccessResponse, RedirectResponse, TempFailureResponse, PermFailureResponse, ClientCertRequiredResponse
 
