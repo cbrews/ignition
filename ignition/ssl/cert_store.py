@@ -5,12 +5,14 @@ was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
+import logging
 from typing import Dict
 
 from .cert_record import CertRecord
 from .cert_wrapper import CertWrapper
-from .exceptions import RemoteCertificateExpired, TofuCertificateRejection
+from .exceptions import RemoteCertificateExpired, TofuCertificateRejection, CertRecordParseException
 
+logger = logging.getLogger(__name__)
 
 class CertStore:
   '''
@@ -84,12 +86,18 @@ class CertStore:
     except FileNotFoundError:
       file_lines = []
     
-    cert_records = [CertRecord.from_string(l) for l in file_lines]
-
-    for c in cert_records:
-      self.__cert_store_data[c.hostname] = c
+    for file_line in file_lines:
+      cert_record = self.__load_record(file_line)
+      if cert_record is not None:
+        self.__cert_store_data[cert_record.hostname] = cert_record
 
     return self
+
+  def __load_record(self, file_line):
+    try:
+      return CertRecord.from_string(file_line)
+    except CertRecordParseException as e:
+      logger.warn(f"Invalid TOFU record encountered: '{file_line.strip()}'. This record has been skipped.")
 
   def __save(self):
     '''
