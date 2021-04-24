@@ -9,6 +9,7 @@ import datetime
 from typing import Dict
 
 from ..globals import *
+from .exceptions import CertRecordParseException
 
 class CertRecord:
   '''
@@ -32,18 +33,21 @@ class CertRecord:
     Generate a CertRecord from a string in the format:
     [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
     '''
-    hostname, fingerprint_with_expiration = host_string.strip().split(' ', maxsplit=1)
-    fingerprint, expiration = fingerprint_with_expiration.split(';EXPIRES=')
-    expiration_datetime = datetime.datetime.fromisoformat(expiration)
+    try:
+      hostname, fingerprint_with_expiration = host_string.strip().split(' ', maxsplit=1)
+      fingerprint, expiration = fingerprint_with_expiration.split(';EXPIRES=')
+      expiration_datetime = datetime.datetime.fromisoformat(expiration)
 
-    return CertRecord(hostname, fingerprint, expiration_datetime)
+      return CertRecord(hostname, fingerprint, expiration_datetime)
+    except Exception as e:
+      raise CertRecordParseException()
 
   def to_string(self):
     '''
     Converts a CertRecord to a string in the format:
     [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
     '''
-    return self.hostname + ' ' + self.fingerprint + ';EXPIRES=' + self.expiration.isoformat() + CRLF
+    return self.hostname + ' ' + self.fingerprint + ';EXPIRES=' + self.expiration.isoformat() + EOL
 
   def is_expired(self):
     '''

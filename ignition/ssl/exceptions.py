@@ -17,3 +17,9 @@ class TofuCertificateRejection(Exception):
   An exception type handle TOFU (trust-on-first-use rejection).
   '''
   pass
+
+class CertRecordParseException(Exception):
+  '''
+  An exception triggered on cert record parsing.
+  '''
+  pass

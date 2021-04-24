@@ -10,6 +10,7 @@ import mock
 import unittest
 
 from ignition.ssl.cert_record import CertRecord
+from ignition.ssl.exceptions import CertRecordParseException
 
 
 class CertRecordTests(unittest.TestCase):
@@ -24,17 +25,22 @@ class CertRecordTests(unittest.TestCase):
     self.assertEqual(cert_record.expiration, self.test_datetime)
 
   def test_from_string(self):
-    cert_record = CertRecord.from_string('myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\r\n')
+    cert_record = CertRecord.from_string('myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\n')
     self.assertEqual(cert_record.hostname, 'myhostname.sample')
     self.assertEqual(cert_record.fingerprint, 'ssh-rsa fingerprint')
     self.assertEqual(cert_record.expiration, self.test_datetime)
     pass
 
+  def test_from_string_invalid(self):
+    self.assertRaises(CertRecordParseException, CertRecord.from_string, 'myhost.com\n')
+    self.assertRaises(CertRecordParseException, CertRecord.from_string, 'myhost.com ssh-rsa fingerprint;EXPIRES=invalid\n')
+    self.assertRaises(CertRecordParseException, CertRecord.from_string, '\n')
+
   def test_to_string(self):
     cert_record = CertRecord('myhostname.sample', 'ssh-rsa fingerprint', self.test_datetime)
     self.assertEqual(
       cert_record.to_string(),
-      'myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\r\n'
+      'myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\n'
     )
 
   @mock.patch('ignition.ssl.cert_record.datetime')

@@ -6,6 +6,7 @@ at http://mozilla.org/MPL/2.0/.
 '''
 
 CRLF = "\r\n"
+EOL = "\n"
 
 '''
 Gemini-Protocol Mechanical Constants
