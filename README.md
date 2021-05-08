@@ -134,6 +134,13 @@ elif response.is_a(ignition.ErrorResponse):
 ```
 [source](examples/advanced-usage.py)
 
+Finally, the module exposes `DEBUG` level logging via standard python capabilities.  If you are having trouble with the requests, enable debug-level logging with:
+
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
 ## API Documentation
 Full API documentation for Ignition is available [here](./docs/api.md).
 
