@@ -17,6 +17,8 @@ In addition, in order to provide stability and simplicity, minimal third-party d
 
 Ignition is currently in prerelease.  You can use Ignition today at your own risk, please monitor this repository for changes until version 1.0 is released.  Please be advised that there may be breaking changes in the API until that time.
 
+You can see ignition in action at (gemini.cbrews.xyz)[https://gemini.cbrews.xyz].
+
 ## Installation
 ⚠ Ignition currently supports Python versions 3.7 - 3.9.
 
