@@ -6,7 +6,6 @@ at http://mozilla.org/MPL/2.0/.
 '''
 
 import socket
-from socket import timeout
 import re
 import ssl
 import logging
@@ -83,8 +82,11 @@ class Request:
       return ssl_certificate_result
 
     logger.debug(f"Sending request header: {self.__url}")
-    header, raw_body = self.__transport_payload(secure_socket_result, self.__url)
+    transport_result = self.__transport_payload(secure_socket_result, self.__url)
+    if isinstance(transport_result, BaseResponse):
+      return transport_result
 
+    header, raw_body = transport_result
     logger.debug(f"Received response header: [{header}] and payload of length {len(raw_body)} bytes")
     return self.__handle_response(header, raw_body, ssl_certificate_result.certificate)
 
@@ -107,16 +109,16 @@ class Request:
       logger.debug(f"socket.herror: socket.gethostbyaddr returned for {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Host error")
     except socket.gaierror as err:
-      logger.debug(f"socket.gaierror: socket.getaddrinfo returned unknown host for {self.__url.host()}.  {err}")
+      logger.debug(f"socket.gaierror: socket.getaddrinfo returned unknown host for {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_DNS, "Unknown host")
-    except timeout as err:
+    except socket.timeout as err:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when connecting to {self.__url.netloc()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_NETWORK, "Networking error")
 
-  def __negotiate_ssl(self, socket, cafile=None) -> ssl.SSLSocket:
+  def __negotiate_ssl(self, socket_obj, cafile=None) -> ssl.SSLSocket:
     '''
     Negotiates a SSL handshake on the passed socket connection and returns the secure socket
     '''
@@ -127,7 +129,7 @@ class Request:
       if self.is_using_ca_cert():
         self.__setup_ssl_client_certificate_context(context)
 
-      secure_socket_result = context.wrap_socket(socket, server_hostname=self.__url.host())
+      secure_socket_result = context.wrap_socket(socket_obj, server_hostname=self.__url.host())
       return secure_socket_result
     except ssl.SSLError as err:
       logger.debug(f"ssl.SSLError for {self.__url.host()} - {err}")
@@ -153,9 +155,6 @@ class Request:
     except ssl.CertificateError as err:
       logger.debut(f"ssl.CertificateError for {self.__url.host()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Error")
-    except timeout:
-      logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {timeout}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when completing SSL handshake for {self.__url.host()} - {err}")
       raise err
@@ -208,15 +207,18 @@ class Request:
     cert, key = self.__ca_cert
     context.load_cert_chain(cert, key)
 
-  def __transport_payload(self, socket, payload):
+  def __transport_payload(self, socket_obj, payload):
     '''
     Handles Gemini protocol negotiation over the socket
     '''
 
     try:
-      socket.sendall((f"{payload}{CRLF}").encode(GEMINI_DEFAULT_ENCODING))
-      fd = socket.makefile('rb')
+      socket_obj.sendall((f"{payload}{CRLF}").encode(GEMINI_DEFAULT_ENCODING))
+      fd = socket_obj.makefile('rb')
       return fd.readline().decode(GEMINI_DEFAULT_ENCODING).strip(), fd.read()
+    except socket.timeout:
+      logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when transporting data to {self.__url.netloc()} - {err}")
       raise err
