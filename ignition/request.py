@@ -13,7 +13,6 @@ import cryptography
 
 from .globals import *
 from .response import BaseResponse, ResponseFactory
-from .ssl.cert_store import CertStore
 from .ssl.cert_wrapper import CertWrapper
 from .ssl.exceptions import RemoteCertificateExpired, TofuCertificateRejection
 from .url import URL
@@ -118,7 +117,7 @@ class Request:
       logger.error(f"Unknown exception encountered when connecting to {self.__url.netloc()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_NETWORK, "Networking error")
 
-  def __negotiate_ssl(self, socket_obj, cafile=None) -> ssl.SSLSocket:
+  def __negotiate_ssl(self, socket_obj) -> ssl.SSLSocket:
     '''
     Negotiates a SSL handshake on the passed socket connection and returns the secure socket
     '''
@@ -153,8 +152,11 @@ class Request:
       logger.debug(f"ssl.SSLCertVerificationError for {self.__url.host()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Verification Error")
     except ssl.CertificateError as err:
-      logger.debut(f"ssl.CertificateError for {self.__url.host()} - {err}")
+      logger.debug(f"ssl.CertificateError for {self.__url.host()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Error")
+    except socket.timeout:
+      logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}")
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when completing SSL handshake for {self.__url.host()} - {err}")
       raise err
@@ -227,8 +229,6 @@ class Request:
     '''
     Handles basic response data from the remote server and hands off to the Response object
     '''
-    error = False
-    
     try:
       status, meta = re.split(GEMINI_RESPONSE_HEADER_SEPARATOR, header, maxsplit=1)
 
