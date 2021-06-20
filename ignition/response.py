@@ -1,16 +1,16 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
 import cgi
-import cryptography
 import logging
 
+import cryptography
+
 from .globals import *
-from .ssl.cert_wrapper import CertWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +20,9 @@ class ResponseFactory:
   Determines the approriate response type based on response status
   and generates the appropriate response type
   '''
-  
+
   @classmethod
-  def create(self, url: str, status: str, meta=None, raw_body=None, certificate=None):
+  def create(cls, url: str, status: str, meta=None, raw_body=None, certificate=None):
     '''
     Given a url, status, and response data, generates the appropriate response type
     '''
@@ -38,16 +38,16 @@ class ResponseFactory:
     }
 
     factory_class = factories.get(basic_status_code, None)
-    
+
     if factory_class is None:
       return ErrorResponse(
-        url, 
-        RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, 
+        url,
+        RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
         f"Invalid response received from the server, status code: {status}",
         None,
         None,
       )
-      
+
     return factory_class(url, status, meta, raw_body, certificate)
 
 class BaseResponse:
@@ -111,7 +111,7 @@ class ErrorResponse(BaseResponse):
   that are outside of the scope of the Gemini protocol.  Included options are:
 
   00: RESPONSE_STATUSDETAIL_ERROR_NETWORK
-  Any errors that occur at the network level, and prevented the client from making any connection 
+  Any errors that occur at the network level, and prevented the client from making any connection
   with external services.
 
   01: RESPONSE_STATUSDETAIL_ERROR_DNS = "01"
@@ -121,11 +121,11 @@ class ErrorResponse(BaseResponse):
   Any errors connecting to the host (timeout, refused, etc.).
 
   03: RESPONSE_STATUSDETAIL_ERROR_TLS
-  Any errors associated with TLS/SSL, including handshake errors, certificate expired errors, 
+  Any errors associated with TLS/SSL, including handshake errors, certificate expired errors,
   and security errors like certificate rejection errors.
 
   04: RESPONSE_STATUSDETAIL_ERROR_PROTOCOL
-  Any errors where a secure message is received from the server, but it does not conform to the 
+  Any errors where a secure message is received from the server, but it does not conform to the
   Gemini protocol requirements and cannot be processed.
   '''
 
@@ -142,11 +142,11 @@ class InputResponse(BaseResponse):
 
   Status codes beginning with 1 are INPUT status codes, meaning that
   the requested resource accepts a line of textual user input.
-  
+
   The user should reissue a request to the url with parameters in the form:
   gemini://hostname/path?query
   '''
-  
+
   def data(self):
     '''
     Returns the related instructions for the InputResponse.
@@ -173,9 +173,9 @@ class SuccessResponse(BaseResponse):
     try:
       return self.raw_body.decode(encoding)
     except LookupError:
-      logger.warn(f"Could not decode response body using invalid encoding {encoding}")
+      logger.warning(f"Could not decode response body using invalid encoding {encoding}")
       return self.raw_body
-  
+
   def __str__(self):
     '''
     The string representation of the success message should be header + body

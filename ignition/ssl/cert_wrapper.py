@@ -1,13 +1,14 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
 import cryptography
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
+
 
 class CertWrapper:
 
@@ -44,10 +45,10 @@ class CertWrapper:
     ).decode('utf-8')
 
   @classmethod
-  def parse(self, raw_certificate: bytes):
+  def parse(cls, raw_certificate: bytes):
     '''
     Takes as input the raw certificate (originally from the TCP socket)
-    Returns a certificate wrapper 
+    Returns a certificate wrapper
     '''
     x509_certificate = x509.load_der_x509_certificate(raw_certificate, default_backend())
     return CertWrapper(x509_certificate)

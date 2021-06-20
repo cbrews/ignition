@@ -1,13 +1,15 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
+# pylint:disable=missing-class-docstring,missing-function-docstring
 
 import datetime
-import mock
 import unittest
+
+import mock
 
 from ignition.ssl.cert_record import CertRecord
 from ignition.ssl.exceptions import CertRecordParseException
@@ -29,7 +31,6 @@ class CertRecordTests(unittest.TestCase):
     self.assertEqual(cert_record.hostname, 'myhostname.sample')
     self.assertEqual(cert_record.fingerprint, 'ssh-rsa fingerprint')
     self.assertEqual(cert_record.expiration, self.test_datetime)
-    pass
 
   def test_from_string_invalid(self):
     self.assertRaises(CertRecordParseException, CertRecord.from_string, 'myhost.com\n')

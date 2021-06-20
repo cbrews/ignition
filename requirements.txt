@@ -1,3 +1,5 @@
 cryptography>=3.0
 pytest
 mock
+pylint
+isort

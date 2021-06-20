@@ -1,14 +1,14 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
 import logging
 
-from .python import urllib
 from .globals import *
+from .python import urllib
 from .util import normalize_path
 
 logger = logging.getLogger(__name__)
@@ -27,11 +27,11 @@ class URL:
     '''
     self.__input_url = url
     self.__parsed_url = self.__url_constructor(url, referer_url)
-    
+
     logger.debug(
       (f"Recieved url {url} for parsing, ") +
-      (f"with referer {referer_url}, " if referer_url else '') + 
-      (f"generated gemini url: {self} ") + 
+      (f"with referer {referer_url}, " if referer_url else '') +
+      (f"generated gemini url: {self} ") +
       (f"DEBUG: {self.__parsed_url}")
     )
 
@@ -54,9 +54,9 @@ class URL:
   def __str__(self):
     '''
     Custom logic to re-join the URL into a string
+    TODO url = 'about:blank', 'example:test' RFC-6694 and RFC-7585
     '''
 
-    # TODO url = 'about:blank', 'example:test' RFC-6694 and RFC-7585
     return ''.join([
       self.protocol(),
       self.host(),
@@ -91,7 +91,7 @@ class URL:
       return self.__parsed_url.port or GEMINI_PORT
     except ValueError:
       # https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
-      logger.warn(f"There was an error reading the port from the url. Defaulting to {GEMINI_PORT}")
+      logger.warning(f"There was an error reading the port from the url. Defaulting to {GEMINI_PORT}")
       return GEMINI_PORT
 
   def netloc(self):

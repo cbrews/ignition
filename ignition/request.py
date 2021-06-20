@@ -1,14 +1,18 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
-import socket
-import re
-import ssl
 import logging
+import re
+import socket
+import ssl
+from socket import gaierror as SocketGaiErrorException  # pylint:disable=no-name-in-module
+from socket import herror as SocketHErrorException  # pylint:disable=no-name-in-module
+from socket import timeout as SocketTimeoutException  # pylint:disable=no-name-in-module
+
 import cryptography
 
 from .globals import *
@@ -32,7 +36,7 @@ class Request:
      socket connection to the remote server.
   3. It validates SSL certificate response using a TOFU
      (trust-on-first-use) validation paradigm
-  4. It manages raw response handling and designation to 
+  4. It manages raw response handling and designation to
      the Response object
   '''
 
@@ -57,7 +61,7 @@ class Request:
     '''
     Fetch the generated URL for the request (based on referer, if present)
     '''
-    
+
     return str(self.__url)
 
   def send(self):
@@ -104,18 +108,18 @@ class Request:
     except ConnectionResetError as err:
       logger.debug(f"ConnectionResetError: Connection to {self.__url.netloc()} was reset. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Connection reset")
-    except socket.herror as err:
+    except SocketHErrorException as err:
       logger.debug(f"socket.herror: socket.gethostbyaddr returned for {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Host error")
-    except socket.gaierror as err:
+    except SocketGaiErrorException as err:
       logger.debug(f"socket.gaierror: socket.getaddrinfo returned unknown host for {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_DNS, "Unknown host")
-    except socket.timeout as err:
+    except SocketTimeoutException as err:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}. {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
       logger.error(f"Unknown exception encountered when connecting to {self.__url.netloc()} - {err}")
-      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_NETWORK, "Networking error")
+      raise err
 
   def __negotiate_ssl(self, socket_obj) -> ssl.SSLSocket:
     '''
@@ -154,7 +158,7 @@ class Request:
     except ssl.CertificateError as err:
       logger.debug(f"ssl.CertificateError for {self.__url.host()} - {err}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Error")
-    except socket.timeout:
+    except SocketTimeoutException:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
@@ -165,7 +169,7 @@ class Request:
     '''
     Trust-on-first-use (TOFU) validation on SSL certificate or throws exception
     '''
-    
+
     try:
       certificate_wrapper = CertWrapper.parse(secure_socket.getpeercert(True))
       self.__cert_store.validate_tofu_or_add(secure_socket.server_hostname, certificate_wrapper)
@@ -218,7 +222,7 @@ class Request:
       socket_obj.sendall((f"{payload}{CRLF}").encode(GEMINI_DEFAULT_ENCODING))
       fd = socket_obj.makefile('rb')
       return fd.readline().decode(GEMINI_DEFAULT_ENCODING).strip(), fd.read()
-    except socket.timeout:
+    except SocketTimeoutException:
       logger.debug(f"socket.timeout: socket timed out connecting to {self.__url.host()}")
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_HOST, "Socket timeout")
     except Exception as err:
@@ -233,24 +237,21 @@ class Request:
       status, meta = re.split(GEMINI_RESPONSE_HEADER_SEPARATOR, header, maxsplit=1)
 
       if not re.match(r"^\d{2}$", status):
-        raise Exception("Response status is not a two-digit code")
+        raise ValueError("Response status is not a two-digit code")
 
       if len(meta) > GEMINI_RESPONSE_HEADER_META_MAXLENGTH:
-        raise Exception("Header meta text is too long")
+        raise ValueError("Header meta text is too long")
 
       return ResponseFactory.create(
         self.__url,
-        status, 
+        status,
         meta.strip(),
         raw_body,
         certificate
       )
-    except Exception as err:
+    except ValueError as err:
       return ResponseFactory.create(
         self.__url,
         RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
         err
       )
-
-  
-    

@@ -28,6 +28,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: isort
+      run: |
+        isort . --check-only --diff
+    - name: pylint
+      run: |
+        pylint examples ignition tests setup.py --rcfile=.pylintrc
     - name: Test with pytest
       run: |
         pytest

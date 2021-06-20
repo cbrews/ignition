@@ -1,13 +1,15 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
+# pylint:disable=missing-class-docstring,missing-function-docstring
 
 import unittest
 
 from ignition.url import URL
+
 
 class UrlBasicTests(unittest.TestCase):
   def test_standard_gemini_url(self):
@@ -27,7 +29,7 @@ class UrlBasicTests(unittest.TestCase):
     self.assertEqual(final_url.port(), 1965)
     self.assertEqual(final_url.path(), '/')
     self.assertEqual(final_url.query(), '')
-  
+
   def test_url_with_different_scheme(self):
     final_url = URL('https://gemini.circumlunar.space/')
     self.assertEqual(str(final_url), 'https://gemini.circumlunar.space/')
@@ -81,7 +83,7 @@ class UrlBasicTests(unittest.TestCase):
     self.assertEqual(final_url.port(), 1965)
     self.assertEqual(final_url.path(), '/test/path.gmi')
     self.assertEqual(final_url.query(), '')
-  
+
   # TODO - review
   def test_url_without_designation(self):
     final_url = URL('gemini.circumlunar.space/test')
@@ -104,7 +106,7 @@ class UrlRefererTests(unittest.TestCase):
     self.assertEqual(final_url.port(), 1965)
     self.assertEqual(final_url.path(), '/')
     self.assertEqual(final_url.query(), '')
-  
+
   def test_url_without_scheme(self):
     final_url = URL(
       '//gus.guru/',
