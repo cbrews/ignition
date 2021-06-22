@@ -7,15 +7,13 @@ at http://mozilla.org/MPL/2.0/.
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
 import datetime
-import unittest
-
-import mock
+from unittest import TestCase, mock
 
 from ignition.ssl.cert_record import CertRecord
 from ignition.ssl.exceptions import CertRecordParseException
 
 
-class CertRecordTests(unittest.TestCase):
+class CertRecordTests(TestCase):
   def setUp(self):
     self.test_datetime = datetime.datetime(2020, 11, 15, 12, 15, 2, 438000)
     self.test_past_datetime = datetime.datetime(2018, 1, 1, 0, 0, 0, 0)

@@ -7,14 +7,14 @@ at http://mozilla.org/MPL/2.0/.
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
 import datetime
-import unittest
+from unittest import TestCase
 
 from ignition.ssl.cert_wrapper import CertWrapper
 
 from ..helpers import load_fixture_bytes
 
 
-class CertWrapperTests(unittest.TestCase):
+class CertWrapperTests(TestCase):
   def test_certificate_parse(self):
     cert_wrapper = CertWrapper.parse(load_fixture_bytes('sample_cert.der'))
 

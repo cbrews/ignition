@@ -6,12 +6,12 @@ at http://mozilla.org/MPL/2.0/.
 '''
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
-import unittest
+from unittest import TestCase
 
-from ignition.util import normalize_path
+from ignition.util import TimeoutManager, normalize_path
 
 
-class UtilTest(unittest.TestCase):
+class UtilTest(TestCase):
   def test_base_normalize_path(self):
     # Base test case
     self.assertEqual(normalize_path('/abc/def'), '/abc/def')
@@ -40,3 +40,16 @@ class UtilTest(unittest.TestCase):
     # Weird base cases
     self.assertEqual(normalize_path(''), '')
     self.assertEqual(normalize_path('/'), '/')
+
+  def test_timeout_manager(self):
+    timeout_manager = TimeoutManager(10)
+
+    # Handle initialization and override
+    self.assertEqual(10, timeout_manager.get_timeout(None))
+    self.assertEqual(20, timeout_manager.get_timeout(20))
+
+    # Handle reset and override
+    timeout_manager.set_default_timeout(12)
+
+    self.assertEqual(12, timeout_manager.get_timeout(None))
+    self.assertEqual(15, timeout_manager.get_timeout(15))

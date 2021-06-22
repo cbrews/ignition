@@ -45,3 +45,28 @@ def normalize_path(path: str) -> str:
   ])
 
   return unescaped_path.replace("//", "/")
+
+
+class TimeoutManager:
+  '''
+  Timeout Manager for global timeout management at the top-level
+  '''
+  def __init__(self, default_timeout):
+    '''
+    Sets a default timeout on initialization
+    '''
+    self.set_default_timeout(default_timeout)
+
+  def set_default_timeout(self, default_timeout):
+    '''
+    Allow the default timeout to be overwritten
+    '''
+    self.default_timeout = default_timeout
+
+  def get_timeout(self, timeout):
+    '''
+    Takes in a timeout and returns that, or the default timeout
+    '''
+    if timeout is not None:
+      return timeout
+    return self.default_timeout

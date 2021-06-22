@@ -6,18 +6,14 @@ at http://mozilla.org/MPL/2.0/.
 '''
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
-import unittest
+from unittest import TestCase
 
 from ignition.request import Request
 
 
-class RequestTests(unittest.TestCase):
+class RequestTests(TestCase):
   def setUp(self):
     self.request = Request('software/', referer='gemini://gemini.circumlunar.space/', request_timeout=30)
-
-  def test_set_timeout(self):
-    self.request.set_timeout(10)
-    self.assertEqual(self.request.timeout, 10)
 
   def test_get_url(self):
     self.assertEqual(self.request.get_url(), 'gemini://gemini.circumlunar.space/software/')

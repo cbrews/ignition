@@ -36,6 +36,12 @@ class CertStore:
     '''
     self.__hosts_file = hosts_file
 
+  def get_hosts_file(self):
+    '''
+    Returns the currently set hosts file location
+    '''
+    return self.__hosts_file
+
   def validate_tofu_or_add(self, hostname: str, cert: CertWrapper) -> bool:
     '''
     Given the hostname & correspoding certificate, this function:
