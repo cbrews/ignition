@@ -1,13 +1,14 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 def normalize_path(path: str) -> str:
   '''
@@ -29,17 +30,18 @@ def normalize_path(path: str) -> str:
   '''
   result_stack = []
   for component in path.split('/'):
-    if component == '.' or component == '':
-      # Do nothing
-      continue
-    elif component == '..':
+    if component in ('.', ''):
+      continue  # Do nothing
+    if component == '..':
       if len(result_stack) > 0:
         result_stack.pop()
     else:
       result_stack.append(component)
-  
-  return (
-    ('/' if len(path) > 0 and path[0] == '/' else '') + 
-    ('/'.join(result_stack)) +
-    ('/' if len(path) > 0 and path[len(path) - 1] == '/' else '')
-  ).replace("//", "/")
+
+  unescaped_path = ''.join([
+    ('/' if len(path) > 0 and path[0] == '/' else ''),
+    ('/'.join(result_stack)),
+    ('/' if len(path) > 0 and path[len(path) - 1] == '/' else ''),
+  ])
+
+  return unescaped_path.replace("//", "/")

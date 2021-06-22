@@ -33,7 +33,14 @@ $ pip -r requirements.txt
 ```
 
 ### Code Formatting Style
-No linting or requirements are currently enforced.  I understand my style is a bit divergent from standard Python style; I hope to clean this up soon.
+We are using a custom linting style enforced by `pylint` and `yapf`.  In order to make your life easier, I've
+included pre-commit hooks that you can install once you've downloaded and installed requirements.
+
+```
+$ pre-commit install
+```
+
+Code style will be updated on commit.
 
 ### Unit Testing
 Unit testing is build through `pytest`.  Unit test can be run by:

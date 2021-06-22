@@ -1,15 +1,15 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
 import datetime
-from typing import Dict
 
 from ..globals import *
 from .exceptions import CertRecordParseException
+
 
 class CertRecord:
   '''
@@ -28,7 +28,7 @@ class CertRecord:
     self.expiration = expiration
 
   @classmethod
-  def from_string(self, host_string: str):
+  def from_string(cls, host_string: str):
     '''
     Generate a CertRecord from a string in the format:
     [HOSTNAME] [SSH-ALGORITHM PUBLIC_KEY];EXPIRES=[YYYY-MM-DDTHH:mm:ss.SSSZ]
@@ -40,7 +40,7 @@ class CertRecord:
 
       return CertRecord(hostname, fingerprint, expiration_datetime)
     except Exception as e:
-      raise CertRecordParseException()
+      raise CertRecordParseException() from e
 
   def to_string(self):
     '''

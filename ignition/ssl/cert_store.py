@@ -1,7 +1,7 @@
 '''
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
-was not distributed with this file, You can obtain one 
+was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
@@ -10,9 +10,10 @@ from typing import Dict
 
 from .cert_record import CertRecord
 from .cert_wrapper import CertWrapper
-from .exceptions import RemoteCertificateExpired, TofuCertificateRejection, CertRecordParseException
+from .exceptions import CertRecordParseException, RemoteCertificateExpired, TofuCertificateRejection
 
 logger = logging.getLogger(__name__)
+
 
 class CertStore:
   '''
@@ -85,7 +86,7 @@ class CertStore:
         file_lines = f.readlines()
     except FileNotFoundError:
       file_lines = []
-    
+
     for file_line in file_lines:
       cert_record = self.__load_record(file_line)
       if cert_record is not None:
@@ -96,8 +97,9 @@ class CertStore:
   def __load_record(self, file_line):
     try:
       return CertRecord.from_string(file_line)
-    except CertRecordParseException as e:
-      logger.warn(f"Invalid TOFU record encountered: '{file_line.strip()}'. This record has been skipped.")
+    except CertRecordParseException:
+      logger.warning(f"Invalid TOFU record encountered: '{file_line.strip()}'. This record has been skipped.")
+      return None
 
   def __save(self):
     '''
@@ -106,5 +108,5 @@ class CertStore:
     with open(self.__hosts_file, 'w') as f:
       for c in self.__cert_store_data.values():
         f.write(c.to_string())
-    
+
     return self

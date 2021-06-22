@@ -10,7 +10,8 @@ import sys
 # Polyfill to include gemini in urllib parsing
 if sys.version_info > (3, 10):
   raise Exception("Python versions > 3.9.x are not supported at this time.")
-elif sys.version_info > (3, 9):
+
+if sys.version_info > (3, 9):
   from .python3_9.Lib import urllib
 elif sys.version_info > (3, 8):
   from .python3_8.Lib import urllib
