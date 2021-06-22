@@ -7,11 +7,20 @@ at http://mozilla.org/MPL/2.0/.
 
 from .globals import *
 from .request import Request
-from .response import ClientCertRequiredResponse, ErrorResponse, InputResponse, PermFailureResponse, RedirectResponse, SuccessResponse, TempFailureResponse
+from .response import (
+  ClientCertRequiredResponse,
+  ErrorResponse,
+  InputResponse,
+  PermFailureResponse,
+  RedirectResponse,
+  SuccessResponse,
+  TempFailureResponse,
+)
 from .ssl.cert_store import CertStore
 
 __timeout = DEFAULT_REQUEST_TIMEOUT
 __cert_store = CertStore(DEFAULT_HOSTS_FILE)
+
 
 def set_default_hosts_file(hosts_file):
   '''
@@ -30,6 +39,7 @@ def set_default_hosts_file(hosts_file):
   '''
   __cert_store.set_hosts_file(hosts_file)
 
+
 def set_default_timeout(timeout):
   '''
   Set the default timeout (in seconds) for all requests made via ignition.
@@ -39,6 +49,7 @@ def set_default_timeout(timeout):
   * timeout: `float`
   '''
   __timeout = timeout
+
 
 def url(request_url, referer=None):
   '''
@@ -87,6 +98,7 @@ def url(request_url, referer=None):
   '''
   dummy_req = Request(request_url, referer=referer)
   return dummy_req.get_url()
+
 
 def request(request_url, referer=None, timeout=None, ca_cert=None):
   '''

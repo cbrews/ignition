@@ -14,13 +14,13 @@ from .globals import *
 
 logger = logging.getLogger(__name__)
 
+
 class ResponseFactory:
   '''
   Wrapper class for factory:
   Determines the approriate response type based on response status
   and generates the appropriate response type
   '''
-
   @classmethod
   def create(cls, url: str, status: str, meta=None, raw_body=None, certificate=None):
     '''
@@ -49,6 +49,7 @@ class ResponseFactory:
       )
 
     return factory_class(url, status, meta, raw_body, certificate)
+
 
 class BaseResponse:
   '''
@@ -104,6 +105,7 @@ class BaseResponse:
     '''
     return f"{self.status} {self.meta}"
 
+
 class ErrorResponse(BaseResponse):
   '''
   ErrorResponse
@@ -128,12 +130,12 @@ class ErrorResponse(BaseResponse):
   Any errors where a secure message is received from the server, but it does not conform to the
   Gemini protocol requirements and cannot be processed.
   '''
-
   def data(self):
     '''
     Fetch data relevant to the ErrorResponse; in this case the metadata message from the response
     '''
     return self.meta
+
 
 class InputResponse(BaseResponse):
   '''
@@ -146,13 +148,13 @@ class InputResponse(BaseResponse):
   The user should reissue a request to the url with parameters in the form:
   gemini://hostname/path?query
   '''
-
   def data(self):
     '''
     Returns the related instructions for the InputResponse.
     The <META> line is a prompt which should be displayed to the user.
     '''
     return self.meta
+
 
 class SuccessResponse(BaseResponse):
   '''
@@ -161,7 +163,6 @@ class SuccessResponse(BaseResponse):
 
   Status codes beginning with 2 are SUCCESS status codes.
   '''
-
   def data(self):
     '''
     Decode the success message body using metadata in the appropriate encoding type
@@ -182,6 +183,7 @@ class SuccessResponse(BaseResponse):
     '''
     return f"{self.status} {self.meta}{CRLF}{self.data()}"
 
+
 class RedirectResponse(BaseResponse):
   '''
   RedirectResponse
@@ -191,12 +193,12 @@ class RedirectResponse(BaseResponse):
 
   The server is redirecting the client to a new location for the requested resource
   '''
-
   def data(self):
     '''
     Returns the new destination for redirection from the server
     '''
     return self.meta
+
 
 class TempFailureResponse(BaseResponse):
   '''
@@ -207,12 +209,12 @@ class TempFailureResponse(BaseResponse):
 
   The request has failed, but an identical request may success in the future.
   '''
-
   def data(self):
     '''
     Returns the data from the server in the META field, which may provide additional information to the user.
     '''
     return f"{self.status} {self.meta}"
+
 
 class PermFailureResponse(BaseResponse):
   '''
@@ -223,12 +225,12 @@ class PermFailureResponse(BaseResponse):
 
   The request has failed, identical requests will likely fail in the future.
   '''
-
   def data(self):
     '''
     Returns the data from the server in the META field, which may provide additional information to the user.
     '''
     return f"{self.status} {self.meta}"
+
 
 class ClientCertRequiredResponse(BaseResponse):
   '''
@@ -239,7 +241,6 @@ class ClientCertRequiredResponse(BaseResponse):
 
   The request should be retried with a client certificate.
   '''
-
   def data(self):
     '''
     Return additional information from the server on certificate requirements

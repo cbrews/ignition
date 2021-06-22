@@ -25,7 +25,16 @@ from ignition.globals import (
   RESPONSE_STATUSDETAIL_SUCCESS,
   RESPONSE_STATUSDETAIL_TEMP_FAILURE,
 )
-from ignition.response import ClientCertRequiredResponse, ErrorResponse, InputResponse, PermFailureResponse, RedirectResponse, ResponseFactory, SuccessResponse, TempFailureResponse
+from ignition.response import (
+  ClientCertRequiredResponse,
+  ErrorResponse,
+  InputResponse,
+  PermFailureResponse,
+  RedirectResponse,
+  ResponseFactory,
+  SuccessResponse,
+  TempFailureResponse,
+)
 
 
 class ResponseFactoryTests(unittest.TestCase):
@@ -73,11 +82,11 @@ class ResponseFactoryTests(unittest.TestCase):
     self.assertIsInstance(response_object3, ErrorResponse)
     self.assertIsInstance(response_object4, ErrorResponse)
 
+
 class InputResponseTests(unittest.TestCase):
   '''
   Handles InputResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -115,11 +124,11 @@ class InputResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class SuccessResponseTests(unittest.TestCase):
   '''
   Handles SuccessResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -157,11 +166,11 @@ class SuccessResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class RedirectResponseTests(unittest.TestCase):
   '''
   Handles RedirectResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -199,11 +208,11 @@ class RedirectResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class TempFailureResponseTests(unittest.TestCase):
   '''
   Handles TempFailureResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -241,11 +250,11 @@ class TempFailureResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class PermFailureResponseTests(unittest.TestCase):
   '''
   Handles PermFailureResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -283,11 +292,11 @@ class PermFailureResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class ClientCertRequiredResponseTests(unittest.TestCase):
   '''
   Handles ClientCertRequiredResponse type
   '''
-
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -325,17 +334,13 @@ class ClientCertRequiredResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
+
 class ErrorResponseTests(unittest.TestCase):
   '''
   Handles ErrorResponse type
   '''
-
   def setUp(self):
-    self.response = ResponseFactory.create(
-      'gemini://test.com/',
-      RESPONSE_STATUSDETAIL_ERROR_DNS,
-      meta='Could not find a host at test.com.'
-    )
+    self.response = ResponseFactory.create('gemini://test.com/', RESPONSE_STATUSDETAIL_ERROR_DNS, meta='Could not find a host at test.com.')
 
   def test_url(self):
     self.assertEqual(self.response.url, 'gemini://test.com/')
@@ -365,18 +370,14 @@ class ErrorResponseTests(unittest.TestCase):
   def test_certificate(self):
     self.assertEqual(self.response.certificate, None)
 
+
 class ErrorResponseUnknownStatusTests(unittest.TestCase):
   '''
   Handles special ErrorResponse type for unmapped responses
   Note: other bad status responses (characters, not matching gemini scheme get caught upstream for now)
   '''
-
   def setUp(self):
-    self.response = ResponseFactory.create(
-      'gemini://test.com/',
-      '99',
-      meta='THIS IS A BAD RESPONSE'
-    )
+    self.response = ResponseFactory.create('gemini://test.com/', '99', meta='THIS IS A BAD RESPONSE')
 
   def test_url(self):
     self.assertEqual(self.response.url, 'gemini://test.com/')
@@ -405,6 +406,7 @@ class ErrorResponseUnknownStatusTests(unittest.TestCase):
 
   def test_certificate(self):
     self.assertEqual(self.response.certificate, None)
+
 
 class SuccessResponseAdvancedTests(unittest.TestCase):
   # TODO: More advanced tests around the success body response

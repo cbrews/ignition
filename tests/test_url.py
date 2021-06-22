@@ -94,12 +94,10 @@ class UrlBasicTests(unittest.TestCase):
     self.assertEqual(final_url.path(), 'gemini.circumlunar.space/test')
     self.assertEqual(final_url.query(), '')
 
+
 class UrlRefererTests(unittest.TestCase):
   def test_standard_gemini_url(self):
-    final_url = URL(
-      'gemini://gus.guru/',
-      referer_url='gemini://gemini.circumlunar.space/'
-    )
+    final_url = URL('gemini://gus.guru/', referer_url='gemini://gemini.circumlunar.space/')
     self.assertEqual(str(final_url), 'gemini://gus.guru/')
     self.assertEqual(final_url.protocol(), 'gemini://')
     self.assertEqual(final_url.host(), 'gus.guru')
@@ -108,10 +106,7 @@ class UrlRefererTests(unittest.TestCase):
     self.assertEqual(final_url.query(), '')
 
   def test_url_without_scheme(self):
-    final_url = URL(
-      '//gus.guru/',
-      referer_url='gemini://gemini.circumlunar.space/'
-    )
+    final_url = URL('//gus.guru/', referer_url='gemini://gemini.circumlunar.space/')
     self.assertEqual(str(final_url), 'gemini://gus.guru/')
     self.assertEqual(final_url.protocol(), 'gemini://')
     self.assertEqual(final_url.host(), 'gus.guru')
@@ -120,10 +115,7 @@ class UrlRefererTests(unittest.TestCase):
     self.assertEqual(final_url.query(), '')
 
   def test_absolute_path_url(self):
-    final_url = URL(
-      '/home',
-      referer_url='gemini://gus.guru/search/page2'
-    )
+    final_url = URL('/home', referer_url='gemini://gus.guru/search/page2')
     self.assertEqual(str(final_url), 'gemini://gus.guru/home')
     self.assertEqual(final_url.protocol(), 'gemini://')
     self.assertEqual(final_url.host(), 'gus.guru')
@@ -132,10 +124,7 @@ class UrlRefererTests(unittest.TestCase):
     self.assertEqual(final_url.query(), '')
 
   def test_relative_path_url(self):
-    final_url = URL(
-      'page1',
-      referer_url='gemini://gus.guru/search/page2'
-    )
+    final_url = URL('page1', referer_url='gemini://gus.guru/search/page2')
     self.assertEqual(str(final_url), 'gemini://gus.guru/search/page1')
     self.assertEqual(final_url.protocol(), 'gemini://')
     self.assertEqual(final_url.host(), 'gus.guru')

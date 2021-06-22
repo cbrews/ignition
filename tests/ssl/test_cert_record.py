@@ -39,10 +39,7 @@ class CertRecordTests(unittest.TestCase):
 
   def test_to_string(self):
     cert_record = CertRecord('myhostname.sample', 'ssh-rsa fingerprint', self.test_datetime)
-    self.assertEqual(
-      cert_record.to_string(),
-      'myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\n'
-    )
+    self.assertEqual(cert_record.to_string(), 'myhostname.sample ssh-rsa fingerprint;EXPIRES=2020-11-15T12:15:02.438000\n')
 
   @mock.patch('ignition.ssl.cert_record.datetime')
   def test_is_expired(self, datetime_mock):

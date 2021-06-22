@@ -23,6 +23,7 @@ from .url import URL
 
 logger = logging.getLogger(__name__)
 
+
 class Request:
   '''
   Handles a single request to a Gemini Server.
@@ -39,7 +40,6 @@ class Request:
   4. It manages raw response handling and designation to
      the Response object
   '''
-
   def __init__(self, url: str, referer=None, request_timeout=None, cert_store=None, ca_cert=None):
     '''
     Initializes Response with a url, referer, and timeout
@@ -48,7 +48,7 @@ class Request:
     self.__url = URL(url, referer_url=referer)
     self.timeout = request_timeout
     self.__cert_store = cert_store
-    self.__ca_cert = ca_cert # This should be a tuple
+    self.__ca_cert = ca_cert  # This should be a tuple
 
   def set_timeout(self, request_timeout: float):
     '''
@@ -242,16 +242,6 @@ class Request:
       if len(meta) > GEMINI_RESPONSE_HEADER_META_MAXLENGTH:
         raise ValueError("Header meta text is too long")
 
-      return ResponseFactory.create(
-        self.__url,
-        status,
-        meta.strip(),
-        raw_body,
-        certificate
-      )
+      return ResponseFactory.create(self.__url, status, meta.strip(), raw_body, certificate)
     except ValueError as err:
-      return ResponseFactory.create(
-        self.__url,
-        RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
-        err
-      )
+      return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, err)

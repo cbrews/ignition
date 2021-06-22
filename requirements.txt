@@ -2,4 +2,5 @@ cryptography>=3.0
 pytest
 mock
 pylint
-isort
+isort>=5.9.0
+yapf>=0.30.0

@@ -1,7 +1,6 @@
 [MASTER]
 ignore=CVS,
        python,
-ignore-patterns=
 jobs=1
 limit-inference-results=100
 persistent=yes
@@ -15,6 +14,7 @@ disable=print-statement,
         parameter-unpacking,
         unpacking-in-except,
         old-raise-syntax,
+        duplicate-code,
         logging-fstring-interpolation,
         logging-format-interpolation,
         invalid-name,
@@ -133,8 +133,7 @@ redefining-builtins-modules=six.moves,past.builtins,future.builtins,builtins,io
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
 indent-after-paren=2
 indent-string='  '
-max-line-length=200
-max-module-lines=2000
+max-line-length=140
 single-line-class-stmt=no
 single-line-if-stmt=no
 

@@ -5,16 +5,19 @@ was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
 
+
 class RemoteCertificateExpired(Exception):
   '''
   An exception type to handle expired certificates from the remote server.
   This should throw if the remote certificate expiration date
   '''
 
+
 class TofuCertificateRejection(Exception):
   '''
   An exception type handle TOFU (trust-on-first-use rejection).
   '''
+
 
 class CertRecordParseException(Exception):
   '''

@@ -11,12 +11,10 @@ from cryptography.hazmat.backends import default_backend
 
 
 class CertWrapper:
-
   '''
   Certificate as defined by x509
   '''
   certificate: cryptography.x509.Certificate
-
   '''
   Certificate fingerprint, to be used in TOFU handling and response
   '''

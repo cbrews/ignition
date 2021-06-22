@@ -14,6 +14,7 @@ from .exceptions import CertRecordParseException, RemoteCertificateExpired, Tofu
 
 logger = logging.getLogger(__name__)
 
+
 class CertStore:
   '''
   Data structure to store the certificates across visited hosts

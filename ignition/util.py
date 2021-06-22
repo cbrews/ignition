@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def normalize_path(path: str) -> str:
   '''
   Implements a normalized path for a string
@@ -30,15 +31,17 @@ def normalize_path(path: str) -> str:
   result_stack = []
   for component in path.split('/'):
     if component in ('.', ''):
-      continue # Do nothing
+      continue  # Do nothing
     if component == '..':
       if len(result_stack) > 0:
         result_stack.pop()
     else:
       result_stack.append(component)
 
-  return (
-    ('/' if len(path) > 0 and path[0] == '/' else '') +
-    ('/'.join(result_stack)) +
-    ('/' if len(path) > 0 and path[len(path) - 1] == '/' else '')
-  ).replace("//", "/")
+  unescaped_path = ''.join([
+    ('/' if len(path) > 0 and path[0] == '/' else ''),
+    ('/'.join(result_stack)),
+    ('/' if len(path) > 0 and path[len(path) - 1] == '/' else ''),
+  ])
+
+  return unescaped_path.replace("//", "/")

@@ -8,9 +8,7 @@ at http://mozilla.org/MPL/2.0/.
 CRLF = "\r\n"
 EOL = "\n"
 
-'''
-Gemini-Protocol Mechanical Constants
-'''
+# Gemini-Protocol Mechanical Constants
 GEMINI_SCHEME = 'gemini'
 GEMINI_PORT = 1965
 GEMINI_DEFAULT_MIME_TYPE = 'text/gemini; charset=utf-8'
@@ -19,9 +17,7 @@ GEMINI_RESPONSE_HEADER_SEPARATOR = "\\s+"
 GEMINI_URL_MAXLENGTH = 1024
 GEMINI_RESPONSE_HEADER_META_MAXLENGTH = 1024
 
-'''
-One-character response codes
-'''
+# One-character response codes
 RESPONSE_STATUS_ERROR = "0"
 RESPONSE_STATUS_INPUT = "1"
 RESPONSE_STATUS_SUCCESS = "2"
@@ -30,9 +26,7 @@ RESPONSE_STATUS_TEMP_FAILURE = "4"
 RESPONSE_STATUS_PERM_FAILURE = "5"
 RESPONSE_STATUS_CLIENTCERT_REQUIRED = "6"
 
-'''
-Two-character response codes
-'''
+# Two-character response codes
 RESPONSE_STATUSDETAIL_ERROR_NETWORK = "00"
 RESPONSE_STATUSDETAIL_ERROR_DNS = "01"
 RESPONSE_STATUSDETAIL_ERROR_HOST = "02"
@@ -57,8 +51,6 @@ RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED = "60"
 RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED_NOT_AUTHORIZED = "61"
 RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED_NOT_VALID = "62"
 
-'''
-ignition application defaults
-'''
+# ignition application defaults
 DEFAULT_REQUEST_TIMEOUT = 30
 DEFAULT_HOSTS_FILE = '.known_hosts'

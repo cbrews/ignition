@@ -32,6 +32,5 @@ class CertWrapperTests(unittest.TestCase):
       'Wlf8Q6Ur6QRCn7MHaDkEFMAMvISkuQbaCJCTzZmWYKUxPolKWH+YoOC5YmhpVMJtR0naRqvJbGL21pWg8R4MXCjQM' +
       'ObHcMZEql5gEMxyJabWuS98HuCNaf3SzVQgpI3CI3PVxmHflZRwiwDuUWTXJ0UsFPelN1Vz0XVz8148wYUxGyABnI' +
       'RrAF0Z1htkb3iBFFo2R4MaPwLQtqNXQCdDlUXKHa4bVSQ6B7VBrL5KeDsFuvaWK+gQ9bfnqT+YSWGTVC2RyXtuvR+' +
-      'Ee1JFqQckE+x2FGbbp5ZCPl1PdgQqPg5M+vXuLdnXk3T1R6ujQTMYL42gAUktHkApLcOQQ7wYFCB1KNXYxoNGsA0p' +
-      'tMs0fsgcGQ=='
+      'Ee1JFqQckE+x2FGbbp5ZCPl1PdgQqPg5M+vXuLdnXk3T1R6ujQTMYL42gAUktHkApLcOQQ7wYFCB1KNXYxoNGsA0ptMs0fsgcGQ=='
     )

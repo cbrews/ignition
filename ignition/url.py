@@ -13,6 +13,7 @@ from .util import normalize_path
 
 logger = logging.getLogger(__name__)
 
+
 class URL:
   '''
   The URL class negotiates the correct URL based on passed in URL.
@@ -20,7 +21,6 @@ class URL:
   This logic prepares the URL to be passed via the socket connector,
   as well as for the data payload for Gemini.
   '''
-
   def __init__(self, url, referer_url=None):
     '''
     Construct a protocool-safe URL based on the passed string.
@@ -28,12 +28,7 @@ class URL:
     self.__input_url = url
     self.__parsed_url = self.__url_constructor(url, referer_url)
 
-    logger.debug(
-      (f"Recieved url {url} for parsing, ") +
-      (f"with referer {referer_url}, " if referer_url else '') +
-      (f"generated gemini url: {self} ") +
-      (f"DEBUG: {self.__parsed_url}")
-    )
+    logger.debug((f"Recieved url {url} for parsing, {f'with referer {referer_url}, ' if referer_url else ''} generated gemini url: {self}"))
 
   def __url_constructor(self, url, referer_url):
     '''
