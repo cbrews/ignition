@@ -36,4 +36,4 @@ jobs:
         pylint examples ignition tests setup.py --rcfile=.pylintrc
     - name: Test with pytest
       run: |
-        pytest
+        pytest --cov=ignition
