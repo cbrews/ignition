@@ -1,6 +1,7 @@
 cryptography>=3.0
 pytest
 mock
-pylint
-isort>=5.9.0
-yapf>=0.30.0
+pylint==2.8.3
+isort==5.9.1
+yapf==0.31.0
+pre-commit>=2.13.0
