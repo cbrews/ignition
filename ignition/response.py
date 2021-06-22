@@ -8,7 +8,7 @@ at http://mozilla.org/MPL/2.0/.
 import cgi
 import logging
 
-import cryptography
+from cryptography.x509 import Certificate
 
 from .globals import *
 
@@ -67,9 +67,9 @@ class BaseResponse:
   status: str
   meta: str
   raw_body: bytes
-  certificate: cryptography.x509.Certificate
+  certificate: Certificate
 
-  def __init__(self, url: str, status: str, meta: str, raw_body: bytes, certificate: cryptography.x509.Certificate):
+  def __init__(self, url: str, status: str, meta: str, raw_body: bytes, certificate: Certificate):
     '''
     Initializes a BaseResponse with the request url, status code, metadata, raw body string, and remote certificate
     '''
