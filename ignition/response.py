@@ -105,6 +105,12 @@ class BaseResponse:
     '''
     return f"{self.status} {self.meta}"
 
+  def __repr__(self):
+    '''
+    A representation of the string for developers
+    '''
+    return f'<ignition.response.{self.__class__.__name__}: {self.status} {self.meta} [from {self.url}]>'
+
 
 class ErrorResponse(BaseResponse):
   '''

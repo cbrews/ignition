@@ -6,12 +6,12 @@ at http://mozilla.org/MPL/2.0/.
 '''
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
-import unittest
+from unittest import TestCase
 
 from ignition.url import URL
 
 
-class UrlBasicTests(unittest.TestCase):
+class UrlBasicTests(TestCase):
   def test_standard_gemini_url(self):
     final_url = URL('gemini://gemini.circumlunar.space/')
     self.assertEqual(str(final_url), 'gemini://gemini.circumlunar.space/')
@@ -95,7 +95,7 @@ class UrlBasicTests(unittest.TestCase):
     self.assertEqual(final_url.query(), '')
 
 
-class UrlRefererTests(unittest.TestCase):
+class UrlRefererTests(TestCase):
   def test_standard_gemini_url(self):
     final_url = URL('gemini://gus.guru/', referer_url='gemini://gemini.circumlunar.space/')
     self.assertEqual(str(final_url), 'gemini://gus.guru/')

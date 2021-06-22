@@ -46,16 +46,9 @@ class Request:
     '''
 
     self.__url = URL(url, referer_url=referer)
-    self.timeout = request_timeout
+    self.__timeout = request_timeout
     self.__cert_store = cert_store
     self.__ca_cert = ca_cert  # This should be a tuple
-
-  def set_timeout(self, request_timeout: float):
-    '''
-    Update request timeout (in seconds)
-    '''
-
-    self.timeout = request_timeout
 
   def get_url(self):
     '''
@@ -99,7 +92,7 @@ class Request:
     '''
 
     try:
-      sock = socket.create_connection((self.__url.host(), self.__url.port()), timeout=self.timeout)
+      sock = socket.create_connection((self.__url.host(), self.__url.port()), timeout=self.__timeout)
       logger.debug(f"Created socket connection: {sock}")
       return sock
     except ConnectionRefusedError as err:

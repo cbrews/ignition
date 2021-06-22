@@ -6,7 +6,7 @@ at http://mozilla.org/MPL/2.0/.
 '''
 # pylint:disable=missing-class-docstring,missing-function-docstring
 
-import unittest
+from unittest import TestCase
 
 from ignition.globals import (
   RESPONSE_STATUS_CLIENTCERT_REQUIRED,
@@ -37,7 +37,7 @@ from ignition.response import (
 )
 
 
-class ResponseFactoryTests(unittest.TestCase):
+class ResponseFactoryTests(TestCase):
   def test_creates_input_response(self):
     response_object1 = ResponseFactory.create('url', '10', meta='Some input', raw_body=b'')
     response_object2 = ResponseFactory.create('url', '11', meta='', raw_body=b'')
@@ -83,7 +83,7 @@ class ResponseFactoryTests(unittest.TestCase):
     self.assertIsInstance(response_object4, ErrorResponse)
 
 
-class InputResponseTests(unittest.TestCase):
+class InputResponseTests(TestCase):
   '''
   Handles InputResponse type
   '''
@@ -125,7 +125,7 @@ class InputResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class SuccessResponseTests(unittest.TestCase):
+class SuccessResponseTests(TestCase):
   '''
   Handles SuccessResponse type
   '''
@@ -167,7 +167,7 @@ class SuccessResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class RedirectResponseTests(unittest.TestCase):
+class RedirectResponseTests(TestCase):
   '''
   Handles RedirectResponse type
   '''
@@ -209,7 +209,7 @@ class RedirectResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class TempFailureResponseTests(unittest.TestCase):
+class TempFailureResponseTests(TestCase):
   '''
   Handles TempFailureResponse type
   '''
@@ -251,7 +251,7 @@ class TempFailureResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class PermFailureResponseTests(unittest.TestCase):
+class PermFailureResponseTests(TestCase):
   '''
   Handles PermFailureResponse type
   '''
@@ -293,7 +293,7 @@ class PermFailureResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class ClientCertRequiredResponseTests(unittest.TestCase):
+class ClientCertRequiredResponseTests(TestCase):
   '''
   Handles ClientCertRequiredResponse type
   '''
@@ -335,7 +335,7 @@ class ClientCertRequiredResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, 'dummy cert object')
 
 
-class ErrorResponseTests(unittest.TestCase):
+class ErrorResponseTests(TestCase):
   '''
   Handles ErrorResponse type
   '''
@@ -371,7 +371,7 @@ class ErrorResponseTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, None)
 
 
-class ErrorResponseUnknownStatusTests(unittest.TestCase):
+class ErrorResponseUnknownStatusTests(TestCase):
   '''
   Handles special ErrorResponse type for unmapped responses
   Note: other bad status responses (characters, not matching gemini scheme get caught upstream for now)
@@ -408,7 +408,7 @@ class ErrorResponseUnknownStatusTests(unittest.TestCase):
     self.assertEqual(self.response.certificate, None)
 
 
-class SuccessResponseAdvancedTests(unittest.TestCase):
+class SuccessResponseAdvancedTests(TestCase):
   # TODO: More advanced tests around the success body response
   def test_default_metadata(self):
     pass

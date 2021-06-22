@@ -17,8 +17,9 @@ from .response import (
   TempFailureResponse,
 )
 from .ssl.cert_store import CertStore
+from .util import TimeoutManager
 
-__timeout = DEFAULT_REQUEST_TIMEOUT
+__timeout = TimeoutManager(DEFAULT_REQUEST_TIMEOUT)
 __cert_store = CertStore(DEFAULT_HOSTS_FILE)
 
 
@@ -48,7 +49,7 @@ def set_default_timeout(timeout):
   Parameters:
   * timeout: `float`
   '''
-  __timeout = timeout
+  __timeout.set_default_timeout(timeout)
 
 
 def url(request_url, referer=None):
@@ -149,9 +150,6 @@ def request(request_url, referer=None, timeout=None, ca_cert=None):
   Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`
   '''
 
-  req = Request(request_url, cert_store=__cert_store, request_timeout=__timeout, referer=referer, ca_cert=ca_cert)
-
-  if timeout:
-    req.set_timeout(timeout)
+  req = Request(request_url, cert_store=__cert_store, request_timeout=__timeout.get_timeout(timeout), referer=referer, ca_cert=ca_cert)
 
   return req.send()
