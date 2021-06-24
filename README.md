@@ -44,8 +44,11 @@ import ignition
 # Fetch capsule content
 response = ignition.request('//gemini.circumlunar.space')
 
-# Print full response from remote capsule
-print(response)
+# Get status from remote capsule
+print(response.status)
+
+# Get response information from remote capsule
+print(response.data())
 ```
 [source](examples/simple-usage.py)
 
