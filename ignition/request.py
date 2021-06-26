@@ -15,10 +15,10 @@ from socket import timeout as SocketTimeoutException  # pylint:disable=no-name-i
 
 import cryptography
 
+from .exceptions import GeminiResponseParseError, RemoteCertificateExpired, TofuCertificateRejection
 from .globals import *
 from .response import BaseResponse, ResponseFactory
 from .ssl.cert_wrapper import CertWrapper
-from .ssl.exceptions import RemoteCertificateExpired, TofuCertificateRejection
 from .url import URL
 
 logger = logging.getLogger(__name__)
@@ -230,11 +230,11 @@ class Request:
       status, meta = re.split(GEMINI_RESPONSE_HEADER_SEPARATOR, header, maxsplit=1)
 
       if not re.match(r"^\d{2}$", status):
-        raise ValueError("Response status is not a two-digit code")
+        raise GeminiResponseParseError("Response status is not a two-digit code")
 
       if len(meta) > GEMINI_RESPONSE_HEADER_META_MAXLENGTH:
-        raise ValueError("Header meta text is too long")
+        raise GeminiResponseParseError("Header meta text is too long")
 
       return ResponseFactory.create(self.__url, status, meta.strip(), raw_body, certificate)
-    except ValueError as err:
+    except GeminiResponseParseError as err:
       return ResponseFactory.create(self.__url, RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, err)

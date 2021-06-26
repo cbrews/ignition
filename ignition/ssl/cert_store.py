@@ -8,9 +8,9 @@ at http://mozilla.org/MPL/2.0/.
 import logging
 from typing import Dict
 
+from ..exceptions import CertRecordParseException, RemoteCertificateExpired, TofuCertificateRejection
 from .cert_record import CertRecord
 from .cert_wrapper import CertWrapper
-from .exceptions import CertRecordParseException, RemoteCertificateExpired, TofuCertificateRejection
 
 logger = logging.getLogger(__name__)
 
