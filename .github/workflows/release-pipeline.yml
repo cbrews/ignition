@@ -1,0 +1,35 @@
+name: CI v2
+
+on:
+  push:
+    branches: [ '*' ]
+
+jobs:
+  release: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Check version
+      run: |
+        version=$(python -m ignition)
+        version_exists=$(git show-ref --tags $version --quiet)
+        if $version_exists; then
+          echo "Release version $(version) already exists.  Skipping release creation."
+        else
+          echo "New release version $(version) found!  Starting release"
+          echo "::set-env name=publish::true"
+          echo "::set-env name=version::$(version)"
+        fi
+    - name: Start release
+      if: env.publish
+      run: echo "Dry run publishing..."
+
+git show-ref --tags `python -m ignition` --quiet
