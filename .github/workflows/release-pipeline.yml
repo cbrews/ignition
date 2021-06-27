@@ -31,5 +31,3 @@ jobs:
     - name: Start release
       if: env.publish
       run: echo "Dry run publishing..."
-
-git show-ref --tags `python -m ignition` --quiet
