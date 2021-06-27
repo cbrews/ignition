@@ -29,7 +29,7 @@ Python 3.8.5
 
 Once your environment is running, you can install requirements:
 ```
-$ pip -r requirements.txt
+$ pip -r requirements.txt -r requirements-dev.txt
 ```
 
 ### Code Formatting Style
