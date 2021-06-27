@@ -19,6 +19,7 @@ jobs:
       run: |
         set -ex
 
+        git show-ref --tags
         version=$(python -m ignition)
         if $(git show-ref --tags $version --quiet); then
           echo "Release version $version already exists.  Skipping release creation."
