@@ -11,7 +11,7 @@ In order to provide a best-in-class interface, this library does not implement t
 In addition, in order to provide stability and simplicity, minimal third-party dependencies are required for Ignition.
 
 ## Project Status
-![Python CI](https://github.com/cbrews/ignition/workflows/Python%20CI/badge.svg)
+[![CI v2](https://github.com/cbrews/ignition/actions/workflows/ci-v2.yml/badge.svg)](https://github.com/cbrews/ignition/actions/workflows/ci-v2.yml)
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
