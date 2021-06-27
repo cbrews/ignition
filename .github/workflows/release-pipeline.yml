@@ -24,7 +24,7 @@ jobs:
         else
           echo "New release version $version found!  Starting release"
           echo "::set-env name=publish::true"
-          echo "::set-env name=version::$(version)"
+          echo "::set-env name=version::$version"
         fi
     - name: Start release
       if: env.publish
