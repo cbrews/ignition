@@ -17,9 +17,10 @@ jobs:
         pip install -r requirements.txt
     - name: Check version
       run: |
+        set -ex
+
         version=$(python -m ignition)
-        version_exists=$(git show-ref --tags $version --quiet)
-        if $version_exists; then
+        if $(git show-ref --tags $version --quiet); then
           echo "Release version $version already exists.  Skipping release creation."
         else
           echo "New release version $version found!  Starting release"
