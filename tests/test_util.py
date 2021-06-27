@@ -4,52 +4,50 @@ Mozilla Public License, v. 2.0. If a copy of the MPL
 was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
 '''
-# pylint:disable=missing-class-docstring,missing-function-docstring
-
-from unittest import TestCase
+# pylint:disable=missing-function-docstring
 
 from ignition.util import TimeoutManager, normalize_path
 
 
-class UtilTest(TestCase):
-  def test_base_normalize_path(self):
-    # Base test case
-    self.assertEqual(normalize_path('/abc/def'), '/abc/def')
+def test_base_normalize_path():
+  # Base test case
+  assert normalize_path('/abc/def') == '/abc/def'
 
-    # . test
-    self.assertEqual(normalize_path('/abc/./def'), '/abc/def')
+  # . test
+  assert normalize_path('/abc/./def') == '/abc/def'
 
-    # .. test
-    self.assertEqual(normalize_path('/abc/../def'), '/def')
+  # .. test
+  assert normalize_path('/abc/../def') == '/def'
 
-    # End . test
-    self.assertEqual(normalize_path('/abc/def/.'), '/abc/def')
+  # End . test
+  assert normalize_path('/abc/def/.') == '/abc/def'
 
-    # End .. test
-    self.assertEqual(normalize_path('/abc/def/..'), '/abc')
+  # End .. test
+  assert normalize_path('/abc/def/..') == '/abc'
 
-    # Start . test
-    self.assertEqual(normalize_path('./abc/def'), 'abc/def')
+  # Start . test
+  assert normalize_path('./abc/def') == 'abc/def'
 
-    # Start .. test
-    self.assertEqual(normalize_path('../abc/def'), 'abc/def')
+  # Start .. test
+  assert normalize_path('../abc/def') == 'abc/def'
 
-    # Complex string
-    self.assertEqual(normalize_path('/a/b/c/./../../g'), '/a/g')
+  # Complex string
+  assert normalize_path('/a/b/c/./../../g') == '/a/g'
 
-    # Weird base cases
-    self.assertEqual(normalize_path(''), '')
-    self.assertEqual(normalize_path('/'), '/')
+  # Weird base cases
+  assert normalize_path('') == ''
+  assert normalize_path('/') == '/'
 
-  def test_timeout_manager(self):
-    timeout_manager = TimeoutManager(10)
 
-    # Handle initialization and override
-    self.assertEqual(10, timeout_manager.get_timeout(None))
-    self.assertEqual(20, timeout_manager.get_timeout(20))
+def test_timeout_manager():
+  timeout_manager = TimeoutManager(10)
 
-    # Handle reset and override
-    timeout_manager.set_default_timeout(12)
+  # Handle initialization and override
+  assert timeout_manager.get_timeout(None) == 10
+  assert timeout_manager.get_timeout(20) == 20
 
-    self.assertEqual(12, timeout_manager.get_timeout(None))
-    self.assertEqual(15, timeout_manager.get_timeout(15))
+  # Handle reset and override
+  timeout_manager.set_default_timeout(12)
+
+  assert timeout_manager.get_timeout(None) == 12
+  assert timeout_manager.get_timeout(15) == 15

@@ -23,3 +23,9 @@ class CertRecordParseException(Exception):
   '''
   An exception triggered on cert record parsing.
   '''
+
+
+class GeminiResponseParseError(Exception):
+  '''
+  Raised when the gemini protocol data response cannot be parsed.
+  '''

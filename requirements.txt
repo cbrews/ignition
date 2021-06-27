@@ -1,7 +1,8 @@
 cryptography>=3.0
-pytest
 mock
-pytest-cov
+pytest==6.2.4
+pytest-cov==2.12.1
+pytest-mock==3.6.1 
 pylint==2.8.3
 isort==5.9.1
 yapf==0.31.0
