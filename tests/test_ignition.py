@@ -12,12 +12,12 @@ import ignition
 
 
 @pytest.fixture
-def request_mock(mocker):
+def mock_request(mocker):
   yield mocker.patch('ignition.Request')
 
 
-def _destructure_request_args(request_mock):
-  args, request_kwargs = request_mock.call_args
+def _destructure_request_args(mock_request):
+  args, request_kwargs = mock_request.call_args
   request_url, = args
   return (
     request_url,
@@ -28,12 +28,12 @@ def _destructure_request_args(request_mock):
   )
 
 
-def test_request(request_mock):
+def test_request(mock_request):
   ignition.request('//test')
 
-  request_mock.assert_called_once()
+  mock_request.assert_called_once()
 
-  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(request_mock)
+  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(mock_request)
 
   assert request_url == '//test'
   assert cert_store.get_hosts_file() == ignition.DEFAULT_HOSTS_FILE
@@ -41,16 +41,16 @@ def test_request(request_mock):
   assert referer is None
   assert ca_cert is None
 
-  request_mock.return_value.send.assert_called_once()
+  mock_request.return_value.send.assert_called_once()
 
 
-def test_request_with_values(request_mock):
+def test_request_with_values(mock_request):
 
   ignition.request('path', referer='//test', timeout=10, ca_cert='string')
 
-  request_mock.assert_called_once()
+  mock_request.assert_called_once()
 
-  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(request_mock)
+  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(mock_request)
 
   assert request_url == 'path'
   assert cert_store.get_hosts_file() == ignition.DEFAULT_HOSTS_FILE
@@ -58,65 +58,65 @@ def test_request_with_values(request_mock):
   assert referer == '//test'
   assert ca_cert == 'string'
 
-  request_mock.return_value.send.assert_called_once()
+  mock_request.return_value.send.assert_called_once()
 
 
-def test_request_with_default_timeout(request_mock):
+def test_request_with_default_timeout(mock_request):
 
   ignition.set_default_timeout(9)
   ignition.request('//test')
 
-  request_mock.assert_called_once()
+  mock_request.assert_called_once()
 
-  _, _, request_timeout, _, _, = _destructure_request_args(request_mock)
+  _, _, request_timeout, _, _, = _destructure_request_args(mock_request)
 
   assert request_timeout == 9
 
-  request_mock.return_value.send.assert_called_once()
+  mock_request.return_value.send.assert_called_once()
 
 
-def test_request_with_overloaded_timeout(request_mock):
+def test_request_with_overloaded_timeout(mock_request):
 
   ignition.set_default_timeout(8)
   ignition.request('//test', timeout=12)
 
-  request_mock.assert_called_once()
+  mock_request.assert_called_once()
 
-  _, _, request_timeout, _, _, = _destructure_request_args(request_mock)
+  _, _, request_timeout, _, _, = _destructure_request_args(mock_request)
 
   assert request_timeout == 12
 
-  request_mock.send_assert_called_once()
+  mock_request.send_assert_called_once()
 
 
-def test_request_with_hosts_file(request_mock):
+def test_request_with_hosts_file(mock_request):
 
   ignition.set_default_hosts_file('.my_hosts_file')
   ignition.request('//test')
 
-  request_mock.assert_called_once()
+  mock_request.assert_called_once()
 
-  _, cert_store, _, _, _, = _destructure_request_args(request_mock)
+  _, cert_store, _, _, _, = _destructure_request_args(mock_request)
 
   assert cert_store.get_hosts_file() == '.my_hosts_file'
 
-  request_mock.return_value.send.assert_called_once()
+  mock_request.return_value.send.assert_called_once()
 
 
-def test_url(request_mock):
+def test_url(mock_request):
   ignition.url('//test')
 
-  request_mock.assert_called_once_with('//test', referer=None)
+  mock_request.assert_called_once_with('//test', referer=None)
 
-  request_mock.return_value.get_url.assert_called_once()
+  mock_request.return_value.get_url.assert_called_once()
 
 
-def test_url_with_referer(request_mock):
+def test_url_with_referer(mock_request):
   ignition.url('path', referer='//test')
 
-  request_mock.assert_called_once_with('path', referer='//test')
+  mock_request.assert_called_once_with('path', referer='//test')
 
-  request_mock.return_value.get_url.assert_called_once()
+  mock_request.return_value.get_url.assert_called_once()
 
 
 def test_instance_objects():
