@@ -1,5 +1,6 @@
 cryptography>=3.0
-pytest==6.2.4 
+mock
+pytest==6.2.4
 pytest-cov==2.12.1
 pytest-mock==3.6.1 
 pylint==2.8.3
