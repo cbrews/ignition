@@ -20,9 +20,9 @@ jobs:
         version=$(python -m ignition)
         version_exists=$(git show-ref --tags $version --quiet)
         if $version_exists; then
-          echo "Release version $(version) already exists.  Skipping release creation."
+          echo "Release version $version already exists.  Skipping release creation."
         else
-          echo "New release version $(version) found!  Starting release"
+          echo "New release version $version found!  Starting release"
           echo "::set-env name=publish::true"
           echo "::set-env name=version::$(version)"
         fi
