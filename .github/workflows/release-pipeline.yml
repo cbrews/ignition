@@ -1,8 +1,6 @@
-name: Release pipeline
+name: "Release pipeline"
 
-on:
-  push:
-    branches: [ '*' ]
+on: push
 
 jobs:
   release: 
