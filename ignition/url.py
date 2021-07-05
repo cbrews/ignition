@@ -25,7 +25,6 @@ class URL:
     '''
     Construct a protocool-safe URL based on the passed string.
     '''
-    self.__input_url = url
     self.__parsed_url = self.__url_constructor(url, referer_url)
 
     logger.debug((f"Recieved url {url} for parsing, {f'with referer {referer_url}, ' if referer_url else ''} generated gemini url: {self}"))
