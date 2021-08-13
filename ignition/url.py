@@ -39,6 +39,7 @@ class URL:
     hostname.
     '''
 
+    url = url.lstrip()
     base_url = url
     if referer_url:
       base_url = urllib.parse.urljoin(referer_url, url, False)

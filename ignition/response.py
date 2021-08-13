@@ -182,6 +182,9 @@ class SuccessResponse(BaseResponse):
     except LookupError:
       logger.warning(f"Could not decode response body using invalid encoding {encoding}")
       return self.raw_body
+    except UnicodeDecodeError:
+      logger.warning(f"Could not decode response body via encoding {encoding}, returning raw data")
+      return self.raw_body
 
   def __str__(self):
     '''

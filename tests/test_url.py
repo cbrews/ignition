@@ -6,21 +6,24 @@ at http://mozilla.org/MPL/2.0/.
 '''
 # pylint:disable=missing-function-docstring
 
+import pytest
+
 from ignition.url import URL
 
 
-def test_standard_gemini_url():
-  final_url = URL('gemini://gemini.circumlunar.space/')
-  assert str(final_url) == 'gemini://gemini.circumlunar.space/'
-  assert final_url.protocol() == 'gemini://'
-  assert final_url.host() == 'gemini.circumlunar.space'
-  assert final_url.port() == 1965
-  assert final_url.path() == '/'
-  assert final_url.query() == ''
-
-
-def test_url_without_scheme():
-  final_url = URL('//gemini.circumlunar.space/')
+@pytest.mark.parametrize(
+  'test_url',
+  [
+    'gemini://gemini.circumlunar.space/',
+    '//gemini.circumlunar.space/',
+    'gemini://gemini.circumlunar.space:1965/',
+    '//gemini.circumlunar.space:1965/',
+    '  gemini://gemini.circumlunar.space:1965/',
+    '  //gemini.circumlunar.space:1965/',
+  ]
+)
+def test_standard_gemini_url(test_url):
+  final_url = URL(test_url)
   assert str(final_url) == 'gemini://gemini.circumlunar.space/'
   assert final_url.protocol() == 'gemini://'
   assert final_url.host() == 'gemini.circumlunar.space'
@@ -49,34 +52,21 @@ def test_url_with_nonstandard_port():
   assert final_url.query() == ''
 
 
-def test_url_with_no_path():
-  final_url = URL('gemini://gemini.circumlunar.space')
-  assert str(final_url) == 'gemini://gemini.circumlunar.space'
+@pytest.mark.parametrize('test_path', ['', '/', '/test/path.gmi'])
+@pytest.mark.parametrize('test_query', ['', 'abc', 'user=name'])
+def test_url_with_basic_paths_and_queries(test_path, test_query):
+  test_url = 'gemini://gemini.circumlunar.space' + test_path
+  if test_query:
+    test_url += '?' + test_query
+
+  final_url = URL(test_url)
+
+  assert str(final_url) == test_url
   assert final_url.protocol() == 'gemini://'
   assert final_url.host() == 'gemini.circumlunar.space'
   assert final_url.port() == 1965
-  assert final_url.path() == ''
-  assert final_url.query() == ''
-
-
-def test_url_with_path():
-  final_url = URL('gemini://gemini.circumlunar.space/test/path.gmi')
-  assert str(final_url) == 'gemini://gemini.circumlunar.space/test/path.gmi'
-  assert final_url.protocol() == 'gemini://'
-  assert final_url.host() == 'gemini.circumlunar.space'
-  assert final_url.port() == 1965
-  assert final_url.path() == '/test/path.gmi'
-  assert final_url.query() == ''
-
-
-def test_url_with_query():
-  final_url = URL('gemini://gemini.circumlunar.space/test/path.gmi?user=name')
-  assert str(final_url) == 'gemini://gemini.circumlunar.space/test/path.gmi?user=name'
-  assert final_url.protocol() == 'gemini://'
-  assert final_url.host() == 'gemini.circumlunar.space'
-  assert final_url.port() == 1965
-  assert final_url.path() == '/test/path.gmi'
-  assert final_url.query() == 'user=name'
+  assert final_url.path() == test_path
+  assert final_url.query() == test_query
 
 
 def test_url_with_convoluted_path():
@@ -86,16 +76,6 @@ def test_url_with_convoluted_path():
   assert final_url.host() == 'gemini.circumlunar.space'
   assert final_url.port() == 1965
   assert final_url.path() == '/test/path.gmi'
-  assert final_url.query() == ''
-
-
-def test_url_without_designation():
-  final_url = URL('gemini.circumlunar.space/test')
-  assert str(final_url) == 'gemini://gemini.circumlunar.space/test'
-  assert final_url.protocol() == 'gemini://'
-  assert final_url.host() == ''
-  assert final_url.port() == 1965
-  assert final_url.path() == 'gemini.circumlunar.space/test'
   assert final_url.query() == ''
 
 
