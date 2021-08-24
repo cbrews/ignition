@@ -88,7 +88,7 @@ class CertStore:
     '''
     file_lines = []
     try:
-      with open(self.__hosts_file, 'r') as f:
+      with open(self.__hosts_file, 'r', encoding='utf-8') as f:
         file_lines = f.readlines()
     except FileNotFoundError:
       file_lines = []
@@ -111,7 +111,7 @@ class CertStore:
     '''
     Saves the full set of host records back to file
     '''
-    with open(self.__hosts_file, 'w') as f:
+    with open(self.__hosts_file, 'w', encoding='utf-8') as f:
       for c in self.__cert_store_data.values():
         f.write(c.to_string())
 
