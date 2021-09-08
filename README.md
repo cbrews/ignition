@@ -63,23 +63,24 @@ In **all** cases, Ignition assumes that the specified endpoint and protocol will
 * Basic request/response connectivity to a Gemini-enabled server.
 * Basic URL parsing mechanics to allow for specifying protocol, host, port, path, and query params, as per [RFC-3986](https://tools.ietf.org/html/rfc3986)
 * Optional referer URL handling.  Ignition allows the user to pass a path & referer URL and can construct the new path, to simplifying the resolution of links on a Gemini capsule page.
-* Decoding of body responses on successful (20) response from Gemini servers.
-* Trust-on-first-use certificate verification handling scheme.
+* Basic decoding of body responses on successful (20) response from Gemini servers.
+* Trust-on-first-use certificate verification handling scheme using key signatures.
 * Fully-featured response objects for each response type.
-* Robust, human-readable error management and custom error handling for failure cases beyond the scope of the protocol.
+* Standardized & robust, human-readable error management.
+* Custom error handling for networking failure cases beyond the scope of the protocol.
 
 ❌ The following Gemini features will *not* be supported by Ignition:
 * Behavioral processing/handling of specific response types from Gemini capsules, including:
   * Generation of client certificates & automatic resubmission.
   * Automatic redirection following on 3x responses.
-* Body parsing & display of text/gemini mime types
-* Command line interface
-* Advanced session & history management
-* Support for other protocols
+* Advanced body response rendering and/or display of text/gemini mime types.
+* Command line or GUI interface.
+* Advanced session & history management.
+* Support for other protocols.
 
 ⚠ These features are not currently supported but may be supported in the future:
-* Alternative certificate verification schemes
-* Titan protocol
+* Non-verified certificate scheme
+* Improved TOFU scenarios
 
 ## Advanced Usage
 More advanced request usage:
