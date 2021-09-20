@@ -15,19 +15,19 @@ if response.is_a(ignition.SuccessResponse):
   print(response.data())
 
 elif response.is_a(ignition.InputResponse):
-  print('Needs additional input: %s' % (response.data()))
+  print(f'Needs additional input: {response.data()}')
 
 elif response.is_a(ignition.RedirectResponse):
-  print('Received response, redirect to: %s' % (response.data()))
+  print(f'Received response, redirect to: {response.data()}')
 
 elif response.is_a(ignition.TempFailureResponse):
-  print('Error from server: %s' % (response.data()))
+  print(f'Error from server: {response.data()}')
 
 elif response.is_a(ignition.PermFailureResponse):
-  print('Error from server: %s' % (response.data()))
+  print(f'Error from server: {response.data()}')
 
 elif response.is_a(ignition.ClientCertRequiredResponse):
-  print('Client certificate required. %s' % (response.data()))
+  print(f'Client certificate required. {response.data()}')
 
 elif response.is_a(ignition.ErrorResponse):
-  print('There was an error on the request: %s' % (response.data()))
+  print(f'There was an error on the request: {response.data()}')
