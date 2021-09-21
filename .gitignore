@@ -13,6 +13,7 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+.coverage
 
 .vscode/
 venv/

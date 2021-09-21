@@ -23,7 +23,7 @@ This class cannot be instantiated directly.
 
 ### Methods
 
-#### request(url: string, referer: string = None, timeout: float = None) -> ignition.BaseResponse
+#### request(url: string, referer: string = None, timeout: float = None, raise_errors = False, ca_cert: Tuple[str, str] = None) -> ignition.BaseResponse
 Given a *url* to a Gemini capsule, this performs a request to the specified url and returns a response (as a subclass of [ignition.BaseResponse](#ignitionbaseresponse)) with the details associated to the response.  This is the interface that most users should use.
 
 If a *referer* is provided, a dynamic URL is constructed by ignition to send a request to. (*referer* expectes a fully qualified url as returned by `ignition.BaseResponse.url` or (less prefered) `ignition.url()`). Typically, in order to simplify the browsing experience, you should pass the previously requested URL as the referer to simplify URL construction logic.
@@ -34,6 +34,8 @@ If a *timeout* is provided, this will specify the client timeout (in seconds) fo
 
 If a *ca_cert* is provided, the certificate will be sent to the server as a CA CERT.  You will need to provide the paths to both the certificate and the key in this case.
 
+If *raise_errors* is `True` (default value = `False`), then non-protocol errors will bubble up and be raised as an exception instead of returning [ignition.ErrorResponse](#ignitionerrorresponse).
+
 Depending on the response from the server, as per Gemini specification, the corresponding response type will be returned.
 
 * If the response status begins with "1", the response type is `INPUT`, and will return a response of type [ignition.InputResponse](#ignitioninputresponse).
@@ -42,12 +44,13 @@ Depending on the response from the server, as per Gemini specification, the corr
 * If the response status begins with "4", the response type is `TEMPORARY FAILURE`, and will return a response of type [ignition.TempFailureResponse](#ignitiontempfailureresponse).
 * If the response status begins with "5", the response type is `PERMANENT FAILURE`, and will return a response of type [ignition.PermFailureResponse](#ignitionpermfailureresponse).
 * If the response status begins with "6", the response type is `CLIENT CERTIFICATE REQUIRED`, and will return a response of type [ignition.ClientCertRequiredResponse](#ignitionclientcertrequiredresponse).
-* If *no valid response* can be returned, ignition assigns a response type of "0" and returns a response of type [ignition.ErrorResponse](#ignitionerrorresponse).
+* If *no valid response* can be returned, ignition assigns a response type of "0" and returns a response of type [ignition.ErrorResponse](#ignitionerrorresponse).  Note: if the user specifies `raise_errors=True`, then any errors will bubble up instead of returning this response type.
 
 Parameters:
 * url: `string`
 * referer: `string` (optional)
 * timeout: `float` (optional)
+* raise_errors: `bool` (optional)
 * ca_cert: `Tuple(cert_file, key_file)` (optional)
 
 Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`

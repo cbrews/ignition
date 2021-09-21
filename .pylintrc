@@ -99,6 +99,8 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
+        too-many-branches,
+        too-many-statements,
         comprehension-escape
 enable=c-extension-no-member
 
