@@ -103,7 +103,7 @@ def url(request_url, referer=None):
   return dummy_req.get_url()
 
 
-def request(request_url, referer=None, timeout=None, ca_cert=None):
+def request(request_url, referer=None, timeout=None, raise_errors=False, ca_cert=None):
   '''
   Given a *url* to a Gemini capsule, this performs a request to the specified
   url and returns a response (as a subclass of [ignition.BaseResponse](#ignitionbaseresponse))
@@ -117,6 +117,10 @@ def request(request_url, referer=None, timeout=None, ca_cert=None):
   the previously requested URL as the referer to simplify URL construction logic.
 
   *See `ignition.url()` for details around url construction with a referer.*
+
+  If *raise_errors* is `True` (default value = `False`), then non-protocol errors
+  will bubble up and be raised as an exception instead of returning
+  [ignition.ErrorResponse](#ignitionerrorresponse)
 
   If a *timeout* is provided, this will specify the client timeout (in seconds)
   for this request.  The default is 30 seconds.  See also `ignition.set_default_timeout`
@@ -142,16 +146,26 @@ def request(request_url, referer=None, timeout=None, ca_cert=None):
     and will return a response of type [ignition.ClientCertRequiredResponse](#ignitionclientcertrequiredresponse).
   * If *no valid response* can be returned, ignition assigns a response type of "0"
     and returns a response of type [ignition.ErrorResponse](#ignitionerrorresponse).
+    Note: if the user specifies `raise_errors=True`, then any errors will bubble up instead of returning
+    this response type.
 
   Parameters:
   * url: `string`
   * referer: `string` (optional)
   * timeout: `float` (optional)
+  * raise_errors: `bool` (optional)
   * ca_cert: `Tuple(cert_file, key_file)` (optional)
 
   Returns: `[ignition.BaseResponse](#ignitionbaseresponse)`
   '''
 
-  req = Request(request_url, cert_store=__cert_store, request_timeout=__timeout.get_timeout(timeout), referer=referer, ca_cert=ca_cert)
+  req = Request(
+    request_url,
+    cert_store=__cert_store,
+    request_timeout=__timeout.get_timeout(timeout),
+    referer=referer,
+    ca_cert=ca_cert,
+    raise_errors=raise_errors,
+  )
 
   return req.send()

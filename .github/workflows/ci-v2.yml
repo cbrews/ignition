@@ -47,4 +47,4 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt
     - name: Test with pytest
       run: |
-        pytest --cov=ignition
+        pytest --cov=ignition tests/

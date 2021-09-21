@@ -24,7 +24,8 @@ def _destructure_request_args(mock_request):
     request_kwargs['cert_store'],
     request_kwargs['request_timeout'],
     request_kwargs['referer'],
-    request_kwargs['ca_cert']
+    request_kwargs['ca_cert'],
+    request_kwargs['raise_errors'],
   )
 
 
@@ -33,11 +34,12 @@ def test_request(mock_request):
 
   mock_request.assert_called_once()
 
-  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(mock_request)
+  request_url, cert_store, request_timeout, referer, ca_cert, raise_errors = _destructure_request_args(mock_request)
 
   assert request_url == '//test'
   assert cert_store.get_hosts_file() == ignition.DEFAULT_HOSTS_FILE
   assert request_timeout == ignition.DEFAULT_REQUEST_TIMEOUT
+  assert raise_errors is False
   assert referer is None
   assert ca_cert is None
 
@@ -46,15 +48,16 @@ def test_request(mock_request):
 
 def test_request_with_values(mock_request):
 
-  ignition.request('path', referer='//test', timeout=10, ca_cert='string')
+  ignition.request('path', referer='//test', timeout=10, raise_errors=True, ca_cert='string')
 
   mock_request.assert_called_once()
 
-  request_url, cert_store, request_timeout, referer, ca_cert = _destructure_request_args(mock_request)
+  request_url, cert_store, request_timeout, referer, ca_cert, raise_errors = _destructure_request_args(mock_request)
 
   assert request_url == 'path'
   assert cert_store.get_hosts_file() == ignition.DEFAULT_HOSTS_FILE
   assert request_timeout == 10
+  assert raise_errors is True
   assert referer == '//test'
   assert ca_cert == 'string'
 
@@ -68,7 +71,7 @@ def test_request_with_default_timeout(mock_request):
 
   mock_request.assert_called_once()
 
-  _, _, request_timeout, _, _, = _destructure_request_args(mock_request)
+  _, _, request_timeout, _, _, _, = _destructure_request_args(mock_request)
 
   assert request_timeout == 9
 
@@ -82,7 +85,7 @@ def test_request_with_overloaded_timeout(mock_request):
 
   mock_request.assert_called_once()
 
-  _, _, request_timeout, _, _, = _destructure_request_args(mock_request)
+  _, _, request_timeout, _, _, _, = _destructure_request_args(mock_request)
 
   assert request_timeout == 12
 
@@ -96,7 +99,7 @@ def test_request_with_hosts_file(mock_request):
 
   mock_request.assert_called_once()
 
-  _, cert_store, _, _, _, = _destructure_request_args(mock_request)
+  _, cert_store, _, _, _, _, = _destructure_request_args(mock_request)
 
   assert cert_store.get_hosts_file() == '.my_hosts_file'
 
