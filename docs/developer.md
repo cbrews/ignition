@@ -1,10 +1,16 @@
 # Developing for Ignition
 
-This section is still under development!
+This section is for software developers who are interested in contributing to the `ignition` project.
 
 ## Contributing
 
-If you run into an issue, please go ahead and open a PR or an issue for any issues found.  Please ensure that all tests pass and things look clean.  It's likely that there are unknown issues in the library today.
+*Bugs*: If you find a problem with the software, you may open a Github issue for the bug.  Additionally, if you have found a solution, please go ahead and open a PR with a fix.  A Github issue is not required if you are able to just open a PR.  Please ensure that:
+* The issue is clearly described (what versions of Python are affected, if not all)
+* Provide clear steps on how to test, if applicable
+* All linting and tests pass
+* Documentation is updated as needed
+
+*Features*: Please feel free to pull any issue to for feature development and create a PR.  Please note: due to the intentional small scope of this project, we are not currently accepting pull requests for new features without a corresponding issue approved by the core developer.  
 
 ## Developing
 
