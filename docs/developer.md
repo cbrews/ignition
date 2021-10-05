@@ -54,12 +54,12 @@ Version testing is currently handled within Github actions.
 ## Contributing Guidelines
 
 ### Code of Conduct
-First and foremost, be a good citizen of the Open Source community and the Geminisphere.  Please be friendly, respectful, professional, and patient with other members of the communities.
+First and foremost, be a good citizen of the Open Source community and of the Geminisphere.  Please be friendly, respectful, professional, and patient with other participants in the community.
 
-Be welcoming to new members; remember that no one has exactly the same background and experience as you, and only by elevating other perspectives can we truly develop the best software and uncover the best solutions.
+Be welcoming to new members; remember that no one has the same background and experience as you. By elevating other perspectives, we can uncover the best solutions and develop the best software.
 
-We will always appreciate good faith conversation and contribution in the community.  In addition, we ask you to be resourceful, curious, and thoughtful in all engagement on this project.  Disagreements may occur; in such cases any discussion is a learning opportunity.
+We will always appreciate good faith conversation and contribution in the community.  In addition, we ask you to come with these values: be thoughtful, resourceful, and curious when you engage on this project.  Disagreements may occur; but through maintaining these values, any disagreement can become a learning opportunity.
 
-There will always be issues with code, in such scenarios please know that the developer is interested in engaging in remediation or resolution at their convenience, given that this is in no means a primary source of business or income.
+There will always be bugs and issues with code. In the event of proposed change, please keep in mind that the core developer will be able to remediate and/or resolve any issues at their convenience, given that this project is in no means a primary business or primary source of income.
 
-The developer will make a best effort to maintain backwards compatibility after release 1.0 as possible but in certain circumstances such compatibility may not be possible.
+The core developer will make a best effort to maintain backwards compatibility after release 1.0 as possible but in certain circumstances such compatibility may not be possible.
