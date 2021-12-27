@@ -4,5 +4,5 @@ pytest-cov==3.0.0
 pytest-mock==3.6.1 
 pylint==2.12.2
 isort==5.10.1
-yapf==0.31.0
+yapf==0.32.0
 pre-commit>=2.13.0
