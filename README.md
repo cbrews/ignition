@@ -162,7 +162,7 @@ The developer documentation is still being completed, if you have specific quest
 ## License
 Ignition is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/).
 
-Copyright 2020-2021 by [Chris Brousseau](https://github.com/cbrews).
+Copyright 2020-2022 by [Chris Brousseau](https://github.com/cbrews).
 
 ## Thank you
 * *solderpunk* for leading the design of the [Gemini protocol](https://gemini.circumlunar.space/docs/specification.html), without which this project would not have been possible.
