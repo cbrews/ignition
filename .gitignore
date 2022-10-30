@@ -15,7 +15,6 @@ build/
 *.egg-info/
 .coverage
 
-.vscode/
 venv/
 
 .known_hosts

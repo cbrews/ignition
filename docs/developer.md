@@ -16,9 +16,15 @@ This section is for software developers who are interested in contributing to th
 
 ### Local Environment Setup
 
-I recommend using `virtualenv` locally to manage your python environment.  Run the following command to setup a local python3 virtual environment on first run:
+I recommend using `pyenv` and `virtualenv` locally to manage your python environment.  When you  `cd` into the `ignition` directory you should be able to run:
+```bash
+$ python --version
+Python 3.10.4
 ```
-$ python3 -m virtualenv ./venv
+
+Run the following command to setup a local python3 virtual environment on first run:
+```bash
+$ python -m venv venv
 created virtual environment ...
 ```
 
@@ -27,19 +33,13 @@ When starting development, initialize the virtual environment with:
 $ . venv/bin/activate
 ```
 
-Check your python version:
-```
-$ python --version
-Python 3.8.5
-```
-
 Once your environment is running, you can install requirements:
 ```
-$ pip -r requirements.txt -r requirements-dev.txt
+$ pip install .[dev]
 ```
 
 ### Code Formatting Style
-We are using a custom linting style enforced by `pylint` and `yapf`.  In order to make your life easier, I've
+We are using a custom linting style enforced by `pylint` and `black`.  In order to make your life easier, I've
 included pre-commit hooks that you can install once you've downloaded and installed requirements.
 
 ```

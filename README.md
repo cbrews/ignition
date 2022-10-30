@@ -51,7 +51,7 @@ print(response.status)
 # Get response information from remote capsule
 print(response.data())
 ```
-[source](examples/simple-usage.py)
+[source](examples/simple_usage.py)
 
 In **all** cases, Ignition assumes that the specified endpoint and protocol will respond over the Gemini protocol, so even if you provide a different protocol or port, it will assume that the endpoint is a Gemini capsule.
 
@@ -108,7 +108,7 @@ response2 = ignition.request('software', referer=response1.url)
 
 print(response2)
 ```
-[source](examples/using-referer.py)
+[source](examples/using_referer.py)
 
 More advanced response validation:
 ```python
@@ -139,7 +139,7 @@ elif response.is_a(ignition.ClientCertRequiredResponse):
 elif response.is_a(ignition.ErrorResponse):
   print('There was an error on the request: %s' % (response.data()))
 ```
-[source](examples/advanced-usage.py)
+[source](examples/advanced_usage.py)
 
 Finally, the module exposes `DEBUG` level logging via standard python capabilities.  If you are having trouble with the requests, enable debug-level logging with:
 

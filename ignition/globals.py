@@ -1,18 +1,18 @@
-'''
+"""
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
 was not distributed with this file, You can obtain one
 at http://mozilla.org/MPL/2.0/.
-'''
+"""
 
 CRLF = "\r\n"
 EOL = "\n"
 
 # Gemini-Protocol Mechanical Constants
-GEMINI_SCHEME = 'gemini'
+GEMINI_SCHEME = "gemini"
 GEMINI_PORT = 1965
-GEMINI_DEFAULT_MIME_TYPE = 'text/gemini; charset=utf-8'
-GEMINI_DEFAULT_ENCODING = 'utf-8'
+GEMINI_DEFAULT_MIME_TYPE = "text/gemini; charset=utf-8"
+GEMINI_DEFAULT_ENCODING = "utf-8"
 GEMINI_RESPONSE_HEADER_SEPARATOR = "\\s+"
 GEMINI_URL_MAXLENGTH = 1024
 GEMINI_RESPONSE_HEADER_META_MAXLENGTH = 1024
@@ -53,4 +53,4 @@ RESPONSE_STATUSDETAIL_CLIENTCERT_REQUIRED_NOT_VALID = "62"
 
 # ignition application defaults
 DEFAULT_REQUEST_TIMEOUT = 30
-DEFAULT_HOSTS_FILE = '.known_hosts'
+DEFAULT_HOSTS_FILE = ".known_hosts"

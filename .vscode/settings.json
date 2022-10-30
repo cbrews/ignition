@@ -1,0 +1,9 @@
+{
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
+  "python.sortImports.path": "isort",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+  },
+}
