@@ -13,6 +13,7 @@ In addition, in order to provide stability and simplicity, minimal third-party d
 ## Project Status
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cbrews/ignition?label=ignition)
 [![CI v2](https://github.com/cbrews/ignition/actions/workflows/ci-v2.yml/badge.svg)](https://github.com/cbrews/ignition/actions/workflows/ci-v2.yml)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ignition-gemini)
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
