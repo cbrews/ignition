@@ -29,7 +29,7 @@ keywords = [
 ]
 dynamic = ["version"]
 dependencies = [
-  "cryptography==38.0.1",
+  "cryptography>=36.0.0",
 ]
 
 [project.optional-dependencies]
