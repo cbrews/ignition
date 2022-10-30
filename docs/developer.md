@@ -16,9 +16,15 @@ This section is for software developers who are interested in contributing to th
 
 ### Local Environment Setup
 
-I recommend using `virtualenv` locally to manage your python environment.  Run the following command to setup a local python3 virtual environment on first run:
+I recommend using `pyenv` and `virtualenv` locally to manage your python environment.  When you  `cd` into the `ignition` directory you should be able to run:
+```bash
+$ python --version
+Python 3.10.4
 ```
-$ python3 -m virtualenv ./venv
+
+Run the following command to setup a local python3 virtual environment on first run:
+```bash
+$ python -m venv venv
 created virtual environment ...
 ```
 
@@ -29,7 +35,6 @@ $ . venv/bin/activate
 
 Once your environment is running, you can install requirements:
 ```
-$ pip install --upgrade pip
 $ pip install .[dev]
 ```
 
