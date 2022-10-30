@@ -23,7 +23,7 @@ from ignition.globals import (
   RESPONSE_STATUSDETAIL_PERM_FAILURE,
   RESPONSE_STATUSDETAIL_REDIRECT_TEMPORARY,
   RESPONSE_STATUSDETAIL_SUCCESS,
-  RESPONSE_STATUSDETAIL_TEMP_FAILURE,
+  RESPONSE_STATUSDETAIL_TEMP_FAILURE
 )
 from ignition.response import (
   ClientCertRequiredResponse,
@@ -33,11 +33,12 @@ from ignition.response import (
   RedirectResponse,
   ResponseFactory,
   SuccessResponse,
-  TempFailureResponse,
+  TempFailureResponse
 )
 
 
 class ResponseFactoryTests(TestCase):
+
   def test_creates_input_response(self):
     response_object1 = ResponseFactory.create('url', '10', meta='Some input', raw_body=b'')
     response_object2 = ResponseFactory.create('url', '11', meta='', raw_body=b'')
@@ -87,6 +88,7 @@ class InputResponseTests(TestCase):
   '''
   Handles InputResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -129,6 +131,7 @@ class SuccessResponseTests(TestCase):
   '''
   Handles SuccessResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -171,6 +174,7 @@ class RedirectResponseTests(TestCase):
   '''
   Handles RedirectResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -213,6 +217,7 @@ class TempFailureResponseTests(TestCase):
   '''
   Handles TempFailureResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -255,6 +260,7 @@ class PermFailureResponseTests(TestCase):
   '''
   Handles PermFailureResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -297,6 +303,7 @@ class ClientCertRequiredResponseTests(TestCase):
   '''
   Handles ClientCertRequiredResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create(
       'gemini://test.com/',
@@ -339,6 +346,7 @@ class ErrorResponseTests(TestCase):
   '''
   Handles ErrorResponse type
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create('gemini://test.com/', RESPONSE_STATUSDETAIL_ERROR_DNS, meta='Could not find a host at test.com.')
 
@@ -376,6 +384,7 @@ class ErrorResponseUnknownStatusTests(TestCase):
   Handles special ErrorResponse type for unmapped responses
   Note: other bad status responses (characters, not matching gemini scheme get caught upstream for now)
   '''
+
   def setUp(self):
     self.response = ResponseFactory.create('gemini://test.com/', '99', meta='THIS IS A BAD RESPONSE')
 
@@ -409,7 +418,7 @@ class ErrorResponseUnknownStatusTests(TestCase):
 
 
 class SuccessResponseAdvancedTests(TestCase):
-  # TODO: More advanced tests around the success body response
+  # TODO: More advanced tests around the success body response. pylint: disable=fixme
   def test_default_metadata(self):
     pass
 

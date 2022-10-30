@@ -7,7 +7,7 @@ at http://mozilla.org/MPL/2.0/.
 
 import logging
 
-from .globals import *
+from .globals import GEMINI_PORT, GEMINI_SCHEME
 from .python import urllib
 from .util import normalize_path
 
@@ -21,6 +21,7 @@ class URL:
   This logic prepares the URL to be passed via the socket connector,
   as well as for the data payload for Gemini.
   '''
+
   def __init__(self, url, referer_url=None):
     '''
     Construct a protocool-safe URL based on the passed string.

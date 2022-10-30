@@ -27,7 +27,7 @@ jobs:
           isort . --check-only --diff
       - name: pylint
         run: |
-          pylint examples ignition tests setup.py --rcfile=.pylintrc
+          pylint examples ignition tests --rcfile=.pylintrc
   test:
     needs: [lint]
     runs-on: ${{ matrix.os }}

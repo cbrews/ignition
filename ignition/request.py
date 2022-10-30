@@ -15,8 +15,17 @@ from socket import timeout as SocketTimeoutException  # pylint:disable=no-name-i
 
 import cryptography
 
-from .exceptions import GeminiResponseParseError, RemoteCertificateExpired, TofuCertificateRejection
-from .globals import *
+from .exceptions import (GeminiResponseParseError, RemoteCertificateExpired, TofuCertificateRejection)
+from .globals import (
+  CRLF,
+  GEMINI_DEFAULT_ENCODING,
+  GEMINI_RESPONSE_HEADER_META_MAXLENGTH,
+  GEMINI_RESPONSE_HEADER_SEPARATOR,
+  RESPONSE_STATUSDETAIL_ERROR_DNS,
+  RESPONSE_STATUSDETAIL_ERROR_HOST,
+  RESPONSE_STATUSDETAIL_ERROR_PROTOCOL,
+  RESPONSE_STATUSDETAIL_ERROR_TLS
+)
 from .response import BaseResponse, ResponseFactory
 from .ssl.cert_wrapper import CertWrapper
 from .url import URL
@@ -40,6 +49,7 @@ class Request:
   4. It manages raw response handling and designation to
      the Response object (or exception raising, if indicated)
   '''
+
   def __init__(self, url: str, raise_errors=False, referer=None, request_timeout=None, cert_store=None, ca_cert=None):
     '''
     Initializes Response with a url, referer, and timeout

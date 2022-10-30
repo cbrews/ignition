@@ -10,7 +10,7 @@ import logging
 
 from cryptography.x509 import Certificate
 
-from .globals import *
+from .globals import RESPONSE_STATUSDETAIL_ERROR_PROTOCOL, GEMINI_DEFAULT_MIME_TYPE, GEMINI_DEFAULT_ENCODING, CRLF
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +21,7 @@ class ResponseFactory:
   Determines the approriate response type based on response status
   and generates the appropriate response type
   '''
+
   @classmethod
   def create(cls, url: str, status: str, meta=None, raw_body=None, certificate=None):
     '''
@@ -136,6 +137,7 @@ class ErrorResponse(BaseResponse):
   Any errors where a secure message is received from the server, but it does not conform to the
   Gemini protocol requirements and cannot be processed.
   '''
+
   def data(self):
     '''
     Fetch data relevant to the ErrorResponse; in this case the metadata message from the response
@@ -154,6 +156,7 @@ class InputResponse(BaseResponse):
   The user should reissue a request to the url with parameters in the form:
   gemini://hostname/path?query
   '''
+
   def data(self):
     '''
     Returns the related instructions for the InputResponse.
@@ -169,6 +172,7 @@ class SuccessResponse(BaseResponse):
 
   Status codes beginning with 2 are SUCCESS status codes.
   '''
+
   def data(self):
     '''
     Decode the success message body using metadata in the appropriate encoding type
@@ -202,6 +206,7 @@ class RedirectResponse(BaseResponse):
 
   The server is redirecting the client to a new location for the requested resource
   '''
+
   def data(self):
     '''
     Returns the new destination for redirection from the server
@@ -218,6 +223,7 @@ class TempFailureResponse(BaseResponse):
 
   The request has failed, but an identical request may success in the future.
   '''
+
   def data(self):
     '''
     Returns the data from the server in the META field, which may provide additional information to the user.
@@ -234,6 +240,7 @@ class PermFailureResponse(BaseResponse):
 
   The request has failed, identical requests will likely fail in the future.
   '''
+
   def data(self):
     '''
     Returns the data from the server in the META field, which may provide additional information to the user.
@@ -250,6 +257,7 @@ class ClientCertRequiredResponse(BaseResponse):
 
   The request should be retried with a client certificate.
   '''
+
   def data(self):
     '''
     Return additional information from the server on certificate requirements

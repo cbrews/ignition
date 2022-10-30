@@ -8,7 +8,7 @@ at http://mozilla.org/MPL/2.0/.
 import datetime
 
 from ..exceptions import CertRecordParseException
-from ..globals import *
+from ..globals import EOL
 
 
 class CertRecord:
