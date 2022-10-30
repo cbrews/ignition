@@ -41,13 +41,13 @@ dev = [
   "pytest-mock==3.10.0",
   "pylint==2.15.5",
   "isort==5.10.1",
-  "yapf==0.32.0",
+  "black==22.10.0",
   "pre-commit==2.13.0",
 ]
 lint = [
   "pylint==2.15.5",
   "isort==5.10.1",
-  "yapf==0.32.0",
+  "black==22.10.0",
 ]
 test = [
   "mock==4.0.3",
@@ -83,21 +83,9 @@ dependencies = { file = ["requirements.txt"] }
 [tool.isort]
 multi_line_output = 3
 include_trailing_comma = true
-line_length = 140
-indent = 2
+profile = "black"
 skip = [
   "ignition/python",
   "venv",
   "build",
 ]
-
-[tool.yapf]
-indent_width = 2
-continuation_indent_width = 2
-column_limit = 140
-dedent_closing_brackets = true
-SPLIT_ARGUMENTS_WHEN_COMMA_TERMINATED = true
-COALESCE_BRACKETS = true
-SPLIT_COMPLEX_COMPREHENSION = true
-split_all_comma_separated_values = true
-split_all_top_level_comma_separated_values = true

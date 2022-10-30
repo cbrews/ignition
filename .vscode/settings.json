@@ -1,6 +1,6 @@
 {
   "python.linting.pylintEnabled": true,
-  "python.formatting.provider": "yapf",
+  "python.formatting.provider": "black",
   "python.sortImports.path": "isort",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

@@ -1,15 +1,14 @@
 repos:
--   repo: https://github.com/google/yapf
-    rev: v0.31.0
+-   repo: https://github.com/psf/black
+    rev: 22.10.0
     hooks:
-      - id: yapf
-        args: [-i]
+      - id: black
 -   repo: https://github.com/pycqa/isort
-    rev: 5.9.1
+    rev: 5.10.1
     hooks:
       - id: isort
 -   repo: https://github.com/pycqa/pylint
-    rev: v2.8.3
+    rev: v2.15.5
     hooks:
     -   id: pylint
         args: [--rcfile=.pylintrc]
