@@ -5,7 +5,7 @@ authors = [
 ]
 description = "ignition - Gemini Protocol Client Transport Library"
 readme = "README.md"
-license = { file="LICENSE" }
+license = { text = "MPL 2.0" }
 requires-python = ">=3.7"
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
@@ -33,11 +33,18 @@ dynamic = ["dependencies", "version"]
 "Homepage" = "https://github.com/cbrews/ignition"
 
 [build-system]
-requires = ['hatchling', 'hatch-fancy-pypi-readme>=22.5.0']
+requires = ['hatchling']
 build-backend = 'hatchling.build'
 
 [tool.hatch.version]
 path = "ignition/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    '/README.md',
+    '/LICENSE',
+    '/ignition',
+]
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
