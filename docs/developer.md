@@ -39,7 +39,7 @@ $ pip install .[dev]
 ```
 
 ### Code Formatting Style
-We are using a custom linting style enforced by `pylint` and `yapf`.  In order to make your life easier, I've
+We are using a custom linting style enforced by `pylint` and `black`.  In order to make your life easier, I've
 included pre-commit hooks that you can install once you've downloaded and installed requirements.
 
 ```
