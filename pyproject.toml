@@ -1,0 +1,65 @@
+[project]
+name = "ignition-gemini"
+authors = [
+  { name="Chris Brousseau", email="cbrews@users.noreply.github.com" },
+]
+description = "ignition - Gemini Protocol Client Transport Library"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3 :: Only",
+]
+keywords = [
+  "gemini", 
+  "client", 
+  "request", 
+  "socket", 
+  "networking"
+]
+dynamic = ["dependencies", "version"]
+
+[project.urls]
+"Homepage" = "https://github.com/cbrews/ignition"
+
+[build-system]
+requires = ['hatchling', 'hatch-fancy-pypi-readme>=22.5.0']
+build-backend = 'hatchling.build'
+
+[tool.hatch.version]
+path = "ignition/__init__.py"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+line_length = 140
+indent = 2
+skip = [
+  "ignition/python",
+  "venv",
+  "build",
+]
+
+[tool.yapf]
+indent_width = 2
+continuation_indent_width = 2
+column_limit = 140
+dedent_closing_brackets = true
+SPLIT_ARGUMENTS_WHEN_COMMA_TERMINATED = true
+COALESCE_BRACKETS = true
+SPLIT_COMPLEX_COMPREHENSION = true
+split_all_comma_separated_values = true
+split_all_top_level_comma_separated_values = true
