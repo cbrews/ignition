@@ -27,7 +27,38 @@ keywords = [
   "socket", 
   "networking"
 ]
-dynamic = ["dependencies", "version"]
+dynamic = ["version"]
+dependencies = [
+  "cryptography==38.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "cryptography==38.0.1",
+  "mock==4.0.3",
+  "pytest==7.1.3",
+  "pytest-cov==4.0.0",
+  "pytest-mock==3.10.0",
+  "pylint==2.15.5",
+  "isort==5.10.1",
+  "yapf==0.32.0",
+  "pre-commit==2.13.0",
+]
+lint = [
+  "pylint==2.15.5",
+  "isort==5.10.1",
+  "yapf==0.32.0",
+]
+test = [
+  "mock==4.0.3",
+  "pytest==7.1.3",
+  "pytest-cov==4.0.0",
+  "pytest-mock==3.10.0",
+]
+build = [
+  "build",
+  "twine",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/cbrews/ignition"

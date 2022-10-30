@@ -27,15 +27,10 @@ When starting development, initialize the virtual environment with:
 $ . venv/bin/activate
 ```
 
-Check your python version:
-```
-$ python --version
-Python 3.8.5
-```
-
 Once your environment is running, you can install requirements:
 ```
-$ pip -r requirements.txt -r requirements-dev.txt
+$ pip install --upgrade pip
+$ pip install .[dev]
 ```
 
 ### Code Formatting Style

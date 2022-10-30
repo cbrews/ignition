@@ -1,29 +1,26 @@
 # Building ignition
 
-To build ignition, following these steps:
+We have upgraded to pyproject.toml build configuration.
 
-Ensure that your version is set in setup.py
-```python
-setup(
-    name='ignition-gemini',
-    version='0.1.0.dev1', # See versioning details here: https://www.python.org/dev/peps/pep-0440/
-    # ...
-)
+Assuming you have already installed the virtual environment in the [developer steps](developer.md), all you need to do to build the package is to install the build dependencies:
+
+```bash
+$ python -m pip install .[build]
 ```
 
-Build package with setup.py and sdist/wheel:
+And then build with the native `build` package:
 ```bash
-$ python3 setup.py sdist bdist_wheel
+$ python -m build
 ```
 
 Push to test pip:
 ```bash
-$ python3 -m twine upload --repository testpypi dist/*
+$ python -m twine upload --repository testpypi dist/*
 ```
 
 Push to real pip:
 ```bash
-$ python3 -m twine upload dist/*
+$ python -m twine upload dist/*
 ```
 
 ## References
