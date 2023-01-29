@@ -51,7 +51,7 @@ Code style will be updated on commit.
 ### Unit Testing
 Unit testing is build through `pytest`.  Unit test can be run by:
 ```
-$ pytest
+$ python -m pytest
 ```
 
 ### Version testing
