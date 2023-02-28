@@ -42,7 +42,7 @@ dev = [
   "pylint==2.16.2",
   "isort==5.12.0",
   "black==23.1.0",
-  "pre-commit==3.1.0",
+  "pre-commit==3.1.1",
 ]
 lint = [
   "pylint==2.16.2",
