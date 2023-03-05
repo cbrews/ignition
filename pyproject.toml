@@ -36,7 +36,7 @@ dependencies = [
 dev = [
   "cryptography==39.0.2",
   "mock==5.0.1",
-  "pytest==7.2.1",
+  "pytest==7.2.2",
   "pytest-cov==4.0.0",
   "pytest-mock==3.10.0",
   "pylint==2.16.2",
@@ -49,11 +49,11 @@ lint = [
   "isort==5.12.0",
   "black==23.1.0",
   "mock==5.0.1",
-  "pytest==7.2.1",
+  "pytest==7.2.2",
 ]
 test = [
   "mock==5.0.1",
-  "pytest==7.2.1",
+  "pytest==7.2.2",
   "pytest-cov==4.0.0",
   "pytest-mock==3.10.0",
 ]
