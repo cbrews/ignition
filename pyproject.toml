@@ -34,7 +34,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "cryptography==40.0.2",
+  "cryptography==41.0.0",
   "mock==5.0.2",
   "pytest==7.3.1",
   "pytest-cov==4.1.0",
