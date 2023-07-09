@@ -192,13 +192,6 @@ class Request:
                 socket_obj, server_hostname=self.__url.host()
             )
             return secure_socket_result
-        except ssl.SSLError as err:
-            logger.debug(f"ssl.SSLError for {self.__url.host()} - {err}")
-            if self.__raise_errors:
-                raise err
-            return ResponseFactory.create(
-                self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Error"
-            )
         except ssl.SSLZeroReturnError as err:
             logger.debug(f"ssl.SSLZeroReturnError for {self.__url.host()} - {err}")
             if self.__raise_errors:
@@ -245,12 +238,12 @@ class Request:
                 RESPONSE_STATUSDETAIL_ERROR_TLS,
                 "SSL Certificate Verification Error",
             )
-        except ssl.CertificateError as err:
-            logger.debug(f"ssl.CertificateError for {self.__url.host()} - {err}")
+        except ssl.SSLError as err:
+            logger.debug(f"ssl.SSLError for {self.__url.host()} - {err}")
             if self.__raise_errors:
                 raise err
             return ResponseFactory.create(
-                self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Certificate Error"
+                self.__url, RESPONSE_STATUSDETAIL_ERROR_TLS, "SSL Error"
             )
         except SocketTimeoutException as err:
             logger.debug(
