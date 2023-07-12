@@ -35,7 +35,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "cryptography==41.0.1",
-  "mock==5.0.2",
+  "mock==5.1.0",
   "pytest==7.4.0",
   "pytest-cov==4.1.0",
   "pytest-mock==3.11.1",
@@ -46,11 +46,11 @@ dev = [
 lint = [
   "ruff==0.0.277",
   "black==23.7.0",
-  "mock==5.0.2",
+  "mock==5.1.0",
   "pytest==7.4.0",
 ]
 test = [
-  "mock==5.0.2",
+  "mock==5.1.0",
   "pytest==7.4.0",
   "pytest-cov==4.1.0",
   "pytest-mock==3.11.1",
