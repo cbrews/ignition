@@ -289,6 +289,8 @@ This is a detailed status message for response type 0x (ERROR).
 
 This is a custom error type outside of the scope of the Gemini protocol.  03 errors represent any errors associated with TLS/SSL, including handshake errors, certificate expired errors, and security errors like certificate rejection errors.  See the message-level details in the `response.data()` to get additional information.
 
+Note that ignition now only supports services with TLS versions >= 1.2.
+
 #### RESPONSE_STATUSDETAIL_ERROR_PROTOCOL = "04"
 This is a detailed status message for response type 0x (ERROR).
 
