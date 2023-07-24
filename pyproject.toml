@@ -41,10 +41,10 @@ dev = [
   "pytest-mock==3.11.1",
   "black==23.7.0",
   "pre-commit==3.3.3",
-  "ruff==0.0.278",
+  "ruff==0.0.280",
 ]
 lint = [
-  "ruff==0.0.278",
+  "ruff==0.0.280",
   "black==23.7.0",
   "mock==5.1.0",
   "pytest==7.4.0",
