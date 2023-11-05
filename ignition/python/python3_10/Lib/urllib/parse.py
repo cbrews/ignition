@@ -64,11 +64,11 @@ __all__ = [
 uses_relative = [
     "",
     "ftp",
-    "gemini",
+    "gemini",  # PATCH added gemini
     "http",
     "gopher",
     "nntp",
-    "imap",  # PATCH added gemini
+    "imap",
     "wais",
     "file",
     "https",
@@ -87,11 +87,11 @@ uses_relative = [
 uses_netloc = [
     "",
     "ftp",
-    "gemini",
+    "gemini",  # PATCH added gemini
     "http",
     "gopher",
     "nntp",
-    "telnet",  # PATCH added gemini
+    "telnet",
     "imap",
     "wais",
     "file",
@@ -427,6 +427,7 @@ _ParseResultBase.fragment.__doc__ = _SplitResultBase.fragment.__doc__
 # ResultBase is no longer part of the documented API, but it is
 # retained since deprecating it isn't worth the hassle
 ResultBase = _NetlocResultMixinStr
+
 
 # Structured result objects for string data
 class DefragResult(_DefragResultBase, _ResultMixinStr):
