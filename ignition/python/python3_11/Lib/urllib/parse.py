@@ -66,10 +66,10 @@ uses_relative = [
     "",
     "ftp",
     "http",
-    "gemini",
+    "gemini",  # PATCH added gemini
     "gopher",
     "nntp",
-    "imap",  # PATCH added gemini
+    "imap",
     "wais",
     "file",
     "https",
@@ -89,10 +89,10 @@ uses_netloc = [
     "",
     "ftp",
     "http",
-    "gemini",
+    "gemini",  # PATCH added gemini
     "gopher",
     "nntp",
-    "telnet",  # PATCH added gemini
+    "telnet",
     "imap",
     "wais",
     "file",
@@ -117,11 +117,11 @@ uses_netloc = [
 uses_params = [
     "",
     "ftp",
-    "gemini",
+    "gemini",  # PATCH added gemini
     "hdl",
     "prospero",
     "http",
-    "imap",  # PATCH added gemini
+    "imap",
     "https",
     "shttp",
     "rtsp",

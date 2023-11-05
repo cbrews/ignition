@@ -8,10 +8,12 @@ at http://mozilla.org/MPL/2.0/.
 import sys
 
 # Polyfill to include gemini in urllib parsing
+if sys.version_info > (3, 13):
+    raise Exception("Python versions > 3.12.x are not supported at this time.")
 if sys.version_info > (3, 12):
-    raise Exception("Python versions > 3.11.x are not supported at this time.")
+    from .python3_12.Lib import urllib
 if sys.version_info > (3, 11):
-    from .python3_10.Lib import urllib
+    from .python3_11.Lib import urllib
 if sys.version_info > (3, 10):
     from .python3_10.Lib import urllib
 if sys.version_info > (3, 9):
