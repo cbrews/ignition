@@ -9,12 +9,12 @@ at http://mozilla.org/MPL/2.0/.
 from ignition.request import Request
 
 request = Request(
-    "software/", referer="gemini://gemini.circumlunar.space/", request_timeout=30
+    "software/", referer="gemini://geminiprotocol.net/", request_timeout=30
 )
 
 
 def test_get_url():
-    assert request.get_url() == "gemini://gemini.circumlunar.space/software/"
+    assert request.get_url() == "gemini://geminiprotocol.net/software/"
 
 
 def test_send():

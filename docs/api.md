@@ -62,22 +62,22 @@ This allows for the bulk of URL generation logic to be handled without ignition 
 
 *Use Case 1: Automatically populate URL protocol*
 ```python
-ignition.url('//gemini.circumlunar.space') # => gemini://gemini.circumlunar.space
+ignition.url('//geminiprotocol.net') # => gemini://geminiprotocol.net
 ```
 
 *Use Case 2: Navigate to an absolute path*
 ```python
-ignition.url('/home', 'gemini://gemini.circumlunar.space') # => gemini://gemini.circumlunar.space/home
+ignition.url('/home', 'gemini://geminiprotocol.net') # => gemini://geminiprotocol.net/home
 ```
 
 *Use Case 3: Navigate to a relative path*
 ```python
-ignition.url('2', 'gemini://gemini.circumlunar.space/home') # => gemini://gemini.circumlunar.space/home/2
+ignition.url('2', 'gemini://geminiprotocol.net/home') # => gemini://geminiprotocol.net/home/2
 ```
 
 *Use Case 4: Resolve paths with navigation*
 ```python
-ignition.url('../fun/', 'gemini://gemini.circumlunar.space/home/work/') # => gemini://gemini.circumlunar.space/home/fun/
+ignition.url('../fun/', 'gemini://geminiprotocol.net/home/work/') # => gemini://geminiprotocol.net/home/fun/
 ```
 
 *Note:* if the user's intent is to generate a url to a Gemini capsule and then make a request, ignition recommends that you just provide the *url* and *referer* to `ignition.request()`, as that function encapsulates all of the logic within this method when making a request.  If you want to retrieve a URL from an already processed request, it is recommended to use `ignition.BaseResponse.url`, as that will store the URL that was actually used.  This method is only intended for use in constructing a URL but not generating a request.

@@ -8,7 +8,7 @@ at http://mozilla.org/MPL/2.0/.
 import ignition
 
 # Fetch capsule content
-response = ignition.request("//gemini.circumlunar.space")
+response = ignition.request("//geminiprotocol.net/")
 
 # Get status from remote capsule
 print(response.status)
