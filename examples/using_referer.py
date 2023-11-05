@@ -7,7 +7,7 @@ at http://mozilla.org/MPL/2.0/.
 
 import ignition
 
-response1 = ignition.request("//gemini.circumlunar.space")
-response2 = ignition.request("software", referer=response1.url)
+response1 = ignition.request("//geminiprotocol.net/")
+response2 = ignition.request("software/", referer=response1.url)
 
 print(response2)

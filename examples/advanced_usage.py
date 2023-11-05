@@ -7,7 +7,7 @@ at http://mozilla.org/MPL/2.0/.
 
 import ignition
 
-url = "//gemini.circumlunar.space"
+url = "//geminiprotocol.net/"
 response = ignition.request(url)
 
 if response.is_a(ignition.SuccessResponse):

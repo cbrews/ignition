@@ -16,7 +16,7 @@ This section is for software developers who are interested in contributing to th
 
 ### Local Environment Setup
 
-I recommend using `pyenv` and `virtualenv` locally to manage your python environment.  When you  `cd` into the `ignition` directory you should be able to run:
+I recommend using `pyenv` and `virtualenv` locally to manage your python environment.  Once you have [pyenv](https://github.com/pyenv/pyenv) installed (with [shell extensions](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv)), you can `cd` into the `ignition` directory you should be able to run:
 ```bash
 $ python --version
 Python 3.10.4

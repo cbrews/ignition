@@ -54,7 +54,6 @@ def test_request(mock_request):
 
 
 def test_request_with_values(mock_request):
-
     ignition.request(
         "path", referer="//test", timeout=10, raise_errors=True, ca_cert="string"
     )
@@ -81,7 +80,6 @@ def test_request_with_values(mock_request):
 
 
 def test_request_with_default_timeout(mock_request):
-
     ignition.set_default_timeout(9)
     ignition.request("//test")
 
@@ -102,7 +100,6 @@ def test_request_with_default_timeout(mock_request):
 
 
 def test_request_with_overloaded_timeout(mock_request):
-
     ignition.set_default_timeout(8)
     ignition.request("//test", timeout=12)
 
@@ -123,7 +120,6 @@ def test_request_with_overloaded_timeout(mock_request):
 
 
 def test_request_with_hosts_file(mock_request):
-
     ignition.set_default_hosts_file(".my_hosts_file")
     ignition.request("//test")
 

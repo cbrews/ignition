@@ -68,22 +68,22 @@ def url(request_url, referer=None):
 
     *Use Case 1: Automatically populate URL protocol*
     ```python
-    ignition.url('//gemini.circumlunar.space') # => gemini://gemini.circumlunar.space
+    ignition.url('//geminiprotocol.net') # => gemini://geminiprotocol.net
     ```
 
     *Use Case 2: Navigate to an absolute path*
     ```python
-    ignition.url('/home', 'gemini://gemini.circumlunar.space') # => gemini://gemini.circumlunar.space/home
+    ignition.url('/home', 'gemini://geminiprotocol.net') # => gemini://geminiprotocol.net/home
     ```
 
     *Use Case 3: Navigate to a relative path*
     ```python
-    ignition.url('2', 'gemini://gemini.circumlunar.space/home') # => gemini://gemini.circumlunar.space/home/2
+    ignition.url('2', 'gemini://geminiprotocol.net/home') # => gemini://geminiprotocol.net/home/2
     ```
 
     *Use Case 4: Resolve paths with navigation*
     ```python
-    ignition.url('../fun/', 'gemini://gemini.circumlunar.space/home/work/') # => gemini://gemini.circumlunar.space/home/fun/
+    ignition.url('../fun/', 'gemini://geminiprotocol.net/home/work/') # => gemini://geminiprotocol.net/home/fun/
     ```
 
     *Note:* if the user's intent is to generate a url to a Gemini capsule and then make a request,
