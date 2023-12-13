@@ -23,7 +23,7 @@ Ignition is currently in prerelease.  You can use Ignition today at your own ris
 You can see ignition in action at [gemini.cbrews.xyz](https://gemini.cbrews.xyz).
 
 ## Installation
-⚠ Ignition currently supports Python versions 3.7 - 3.11.
+⚠ Ignition currently supports Python versions 3.7 - 3.12.
 
 Ignition can be installed via [PIP](https://pypi.org/project/ignition-gemini/).  You should install it in alignment with your current development process; if you do not have a build process yet, I recommend you install within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
