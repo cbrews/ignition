@@ -78,6 +78,9 @@ include = [
     '/ignition',
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["ignition"]
+
 [tool.black]
 exclude = "ignition/python"
 
