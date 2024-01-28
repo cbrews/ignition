@@ -40,13 +40,13 @@ dev = [
   "pytest==7.4.4",
   "pytest-cov==4.1.0",
   "pytest-mock==3.11.1",
-  "black==23.12.1",
+  "black==24.1.0",
   "pre-commit==3.6.0",
   "ruff==0.1.14",
 ]
 lint = [
   "ruff==0.1.14",
-  "black==23.12.1",
+  "black==24.1.0",
   "mock==5.1.0",
   "pytest==7.4.4",
 ]
