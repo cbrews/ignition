@@ -18,12 +18,10 @@ In addition, in order to provide stability and simplicity, minimal third-party d
 
 ![The status is good to go.  This is Gemini Control.](docs/img/transcript-2.png)
 
-Ignition is currently in prerelease.  You can use Ignition today at your own risk, please monitor this repository for changes until version 1.0 is released.  Please be advised that there may be breaking changes in the API until that time.
-
-You can see ignition in action at [gemini.cbrews.xyz](https://gemini.cbrews.xyz).
+Ignition is no longer being updated.
 
 ## Installation
-⚠ Ignition currently supports Python versions 3.7 - 3.12.
+⚠ Ignition supports Python versions 3.7 - 3.12.
 
 Ignition can be installed via [PIP](https://pypi.org/project/ignition-gemini/).  You should install it in alignment with your current development process; if you do not have a build process yet, I recommend you install within a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
@@ -61,7 +59,7 @@ In **all** cases, Ignition assumes that the specified endpoint and protocol will
 
 ![This is Gemini Control.  The conversation between pilot and ground so far in this filght has largely been confined to the normal type of test pilot talk that you would expect.](docs/img/transcript-3.png)
 
-✅ Ignition currently supports the following features:
+✅ Ignition supports the following features:
 * Basic request/response connectivity to a Gemini-enabled server.
 * Basic URL parsing mechanics to allow for specifying protocol, host, port, path, and query params, as per [RFC-3986](https://tools.ietf.org/html/rfc3986)
 * Optional referer URL handling.  Ignition allows the user to pass a path & referer URL and can construct the new path, to simplifying the resolution of links on a Gemini capsule page.
@@ -79,8 +77,6 @@ In **all** cases, Ignition assumes that the specified endpoint and protocol will
 * Command line or GUI interface.
 * Advanced session & history management.
 * Support for other protocols.
-
-⚠ These features are not currently supported but may be supported in the future:
 * Non-verified certificate scheme
 * Improved TOFU scenarios
 
@@ -157,14 +153,12 @@ Full API documentation for Ignition is available [here](./docs/api.md).
 
 ![There are a few reports from the pilots.  They are simply identifying their flight plan very carefully.  Four minutes into the flight, Gordon Cooper just told Grissom that he is looking mighty good.  Gus gave him a reasuring laugh.  A very calm pilot in command of that spacecraft.](docs/img/transcript-4.png)
 
-Want to help contribute to Ignition?  See the [developer documentation](./docs/developer.md) for contribution guidelines, build processes, and testing.
-
-The developer documentation is still being completed, if you have specific questions, please open tickets within this project.
+Ignition is no longer accepting contributions.  Please feel free to fork this repository.
 
 ## License
 Ignition is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/).
 
-Copyright 2020-2022 by [Chris Brousseau](https://github.com/cbrews).
+Copyright 2020-2024 by [Chris Brousseau](https://github.com/cbrews).
 
 ## Thank you
 * *solderpunk* for leading the design of the [Gemini protocol](https://geminiprotocol.net/docs/specification.html), without which this project would not have been possible.
