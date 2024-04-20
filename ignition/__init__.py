@@ -19,7 +19,7 @@ from .response import (
 from .ssl.cert_store import CertStore
 from .util import TimeoutManager
 
-__version__ = "0.2.1"
+__version__ = "1.0.0"
 
 __timeout = TimeoutManager(DEFAULT_REQUEST_TIMEOUT)
 __cert_store = CertStore(DEFAULT_HOSTS_FILE)
